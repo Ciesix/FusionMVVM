@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Activator.cs" />
     <Compile Include="DefaultIoc.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="Ioc.cs" />

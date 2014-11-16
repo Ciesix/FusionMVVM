@@ -40,6 +40,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultIocTests.cs" />
+    <Compile Include="Fakes\FakeDatabaseService.cs" />
+    <Compile Include="Fakes\IFakeDatabaseService.cs" />
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
