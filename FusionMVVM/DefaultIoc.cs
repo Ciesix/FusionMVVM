@@ -10,7 +10,7 @@ namespace FusionMVVM
         private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
 
         /// <summary>
-        /// Registers a type. When resolved a new instance will be returned.
+        /// Registers a type. When Resolve is called, a new object will be create.
         /// </summary>
         /// <typeparam name="TInterface"></typeparam>
         /// <typeparam name="TType"></typeparam>
@@ -24,7 +24,19 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Resolves a registered object.
+        /// Unregisters a service. When this method is called, everything related is removed.
+        /// </summary>
+        /// <typeparam name="TInterface"></typeparam>
+        public void Unregister<TInterface>()
+        {
+            var key = typeof(TInterface);
+
+            Type type;
+            _registeredTypes.TryRemove(key, out type);
+        }
+
+        /// <summary>
+        /// Resolves the last registered service.
         /// </summary>
         /// <typeparam name="TInterface"></typeparam>
         /// <returns></returns>

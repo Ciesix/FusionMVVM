@@ -36,5 +36,17 @@ namespace FusionMVVM.Tests
 
             Assert.NotSame(first, second);
         }
+
+        [Fact]
+        public void Unregister_ResolveObjectAfterUnregister_Null()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
+
+            Ioc.Current.Unregister<IFakeDatabaseService>();
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.Null(service);
+        }
     }
 }
