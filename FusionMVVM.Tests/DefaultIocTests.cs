@@ -1,4 +1,5 @@
-﻿using FusionMVVM.Tests.Fakes;
+﻿using System;
+using FusionMVVM.Tests.Fakes;
 using Xunit;
 
 namespace FusionMVVM.Tests
@@ -11,6 +12,22 @@ namespace FusionMVVM.Tests
             Ioc.Reset();
             var service = Ioc.Current.Resolve<IFakeDatabaseService>();
             Assert.Null(service);
+        }
+
+        [Fact]
+        public void RegisterType_InterfaceTypeParameterIsNull_ThrowException()
+        {
+            Ioc.Reset();
+            var exception = Assert.Throws<ArgumentNullException>(() => Ioc.Current.RegisterType(null, typeof(FakeDatabaseService)));
+            Assert.Equal("interfaceType", exception.ParamName);
+        }
+
+        [Fact]
+        public void RegisterType_TypeParameterIsNull_ThrowException()
+        {
+            Ioc.Reset();
+            var exception = Assert.Throws<ArgumentNullException>(() => Ioc.Current.RegisterType(typeof(IFakeDatabaseService), null));
+            Assert.Equal("type", exception.ParamName);
         }
 
         [Fact]

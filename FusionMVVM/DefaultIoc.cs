@@ -17,10 +17,25 @@ namespace FusionMVVM
         /// <typeparam name="TType"></typeparam>
         public void RegisterType<TInterface, TType>()
         {
-            var key = typeof(TInterface);
+            var interfaceType = typeof(TInterface);
 
-            RegisterType(key, typeof(TType));
-            CleanupServices(key);
+            RegisterType(interfaceType, typeof(TType));
+            CleanupServices(interfaceType);
+        }
+
+        /// <summary>
+        /// Registers a type. When Resolve is called, a new object will be create.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="type"></param>
+        public void RegisterType(Type interfaceType, Type type)
+        {
+            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            if (type == null) throw new ArgumentNullException("type");
+
+            // Add the interfaceType/type or update a previous registered type, with the same
+            // interfaceType.
+            _registeredTypes.AddOrUpdate(interfaceType, k => type, (k, v) => type);
         }
 
         /// <summary>
@@ -30,10 +45,10 @@ namespace FusionMVVM
         /// <typeparam name="TInterface"></typeparam>
         public void RegisterAsSingleton<TInterface>(TInterface theObject)
         {
-            var key = typeof(TInterface);
+            var interfaceType = typeof(TInterface);
 
-            RegisterType(key, theObject.GetType());
-            _storedServices.AddOrUpdate(key, k => theObject, (k, v) => theObject);
+            RegisterType(interfaceType, theObject.GetType());
+            _storedServices.AddOrUpdate(interfaceType, k => theObject, (k, v) => theObject);
         }
 
         /// <summary>
@@ -42,12 +57,12 @@ namespace FusionMVVM
         /// <typeparam name="TInterface"></typeparam>
         public void Unregister<TInterface>()
         {
-            var key = typeof(TInterface);
+            var interfaceType = typeof(TInterface);
 
             Type type;
-            _registeredTypes.TryRemove(key, out type);
+            _registeredTypes.TryRemove(interfaceType, out type);
 
-            CleanupServices(key);
+            CleanupServices(interfaceType);
         }
 
         /// <summary>
@@ -57,13 +72,13 @@ namespace FusionMVVM
         /// <returns></returns>
         public TInterface Resolve<TInterface>()
         {
-            var key = typeof(TInterface);
+            var interfaceType = typeof(TInterface);
 
             Type type;
-            if (_registeredTypes.TryGetValue(key, out type))
+            if (_registeredTypes.TryGetValue(interfaceType, out type))
             {
                 object instance;
-                if (_storedServices.TryGetValue(key, out instance))
+                if (_storedServices.TryGetValue(interfaceType, out instance))
                 {
                     // Return the stored singleton object.
                     return (TInterface)instance;
@@ -81,24 +96,13 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Registers a key/type as a pair.
+        /// Cleanup stored services with the matching interface type.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="type"></param>
-        private void RegisterType(Type key, Type type)
-        {
-            // Add the key/type or update a previous registered type, with the same key.
-            _registeredTypes.AddOrUpdate(key, k => type, (k, v) => type);
-        }
-
-        /// <summary>
-        /// Cleanup stored services with the matching key.
-        /// </summary>
-        /// <param name="key"></param>
-        private void CleanupServices(Type key)
+        /// <param name="interfaceType"></param>
+        private void CleanupServices(Type interfaceType)
         {
             object instance;
-            _storedServices.TryRemove(key, out instance);
+            _storedServices.TryRemove(interfaceType, out instance);
         }
     }
 }
