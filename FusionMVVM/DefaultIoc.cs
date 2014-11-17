@@ -8,6 +8,7 @@ namespace FusionMVVM
     internal class DefaultIoc : IContainer
     {
         private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
+        private readonly ConcurrentDictionary<Type, object> _storedServices = new ConcurrentDictionary<Type, object>();
 
         /// <summary>
         /// Registers a type. When Resolve is called, a new object will be create.
@@ -17,10 +18,22 @@ namespace FusionMVVM
         public void RegisterType<TInterface, TType>()
         {
             var key = typeof(TInterface);
-            var value = typeof(TType);
 
-            // Add the key/value or update a previous registered value, with the same key.
-            _registeredTypes.AddOrUpdate(key, k => value, (k, v) => value);
+            RegisterType(key, typeof(TType));
+            CleanupServices(key);
+        }
+
+        /// <summary>
+        /// Registers an object as a singleton. When Resolve is called, the same object is returned.
+        /// </summary>
+        /// <param name="theObject"></param>
+        /// <typeparam name="TInterface"></typeparam>
+        public void RegisterAsSingleton<TInterface>(TInterface theObject)
+        {
+            var key = typeof(TInterface);
+
+            RegisterType(key, theObject.GetType());
+            _storedServices.AddOrUpdate(key, k => theObject, (k, v) => theObject);
         }
 
         /// <summary>
@@ -33,6 +46,8 @@ namespace FusionMVVM
 
             Type type;
             _registeredTypes.TryRemove(key, out type);
+
+            CleanupServices(key);
         }
 
         /// <summary>
@@ -47,6 +62,13 @@ namespace FusionMVVM
             Type type;
             if (_registeredTypes.TryGetValue(key, out type))
             {
+                object instance;
+                if (_storedServices.TryGetValue(key, out instance))
+                {
+                    // Return the stored singleton object.
+                    return (TInterface)instance;
+                }
+
                 // Get the first constructor from the registered type.
                 var constructor = type.GetConstructors().First();
 
@@ -56,6 +78,27 @@ namespace FusionMVVM
             }
 
             return default(TInterface);
+        }
+
+        /// <summary>
+        /// Registers a key/type as a pair.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="type"></param>
+        private void RegisterType(Type key, Type type)
+        {
+            // Add the key/type or update a previous registered type, with the same key.
+            _registeredTypes.AddOrUpdate(key, k => type, (k, v) => type);
+        }
+
+        /// <summary>
+        /// Cleanup stored services with the matching key.
+        /// </summary>
+        /// <param name="key"></param>
+        private void CleanupServices(Type key)
+        {
+            object instance;
+            _storedServices.TryRemove(key, out instance);
         }
     }
 }

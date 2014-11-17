@@ -10,6 +10,13 @@
         void RegisterType<TInterface, TType>();
 
         /// <summary>
+        /// Registers an object as a singleton. When Resolve is called, the same object is returned.
+        /// </summary>
+        /// <param name="theObject"></param>
+        /// <typeparam name="TInterface"></typeparam>
+        void RegisterAsSingleton<TInterface>(TInterface theObject);
+
+        /// <summary>
         /// Unregisters a service. When this method is called, everything related is removed.
         /// </summary>
         /// <typeparam name="TInterface"></typeparam>

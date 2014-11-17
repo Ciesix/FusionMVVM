@@ -14,7 +14,7 @@ namespace FusionMVVM.Tests
         }
 
         [Fact]
-        public void RegisterType_ResolveObjectAfterRegisterType_NotNull()
+        public void RegisterType_ResolveObject_NotNull()
         {
             Ioc.Reset();
             Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
@@ -26,7 +26,7 @@ namespace FusionMVVM.Tests
         }
 
         [Fact]
-        public void RegisterType_ResolveMultipleObjectAfterRegisterType_NotSameObject()
+        public void RegisterType_ResolveMultipleObject_NotSameObject()
         {
             Ioc.Reset();
             Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
@@ -38,7 +38,31 @@ namespace FusionMVVM.Tests
         }
 
         [Fact]
-        public void Unregister_ResolveObjectAfterUnregister_Null()
+        public void RegisterAsSingleton_ResolveObject_NotNull()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService());
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.NotNull(service);
+            Assert.IsType<FakeDatabaseService>(service);
+        }
+
+        [Fact]
+        public void RegisterAsSingleton_ResolveMultipleObject_SameObject()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService());
+
+            var first = Ioc.Current.Resolve<IFakeDatabaseService>();
+            var second = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.Same(first, second);
+        }
+
+        [Fact]
+        public void Unregister_ResolveObject_Null()
         {
             Ioc.Reset();
             Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
