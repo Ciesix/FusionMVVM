@@ -26,6 +26,14 @@ namespace FusionMVVM
         void RegisterAsSingleton<TInterface>(TInterface theObject);
 
         /// <summary>
+        /// Registers an object as a lazy singleton. When Resolve is called, the same object is returned.
+        /// The object will be created the first time Resolve is called.
+        /// </summary>
+        /// <param name="theConstructor"></param>
+        /// <typeparam name="TInterface"></typeparam>
+        void RegisterAsSingleton<TInterface>(Func<TInterface> theConstructor);
+
+        /// <summary>
         /// Unregisters a service. When this method is called, everything related is removed.
         /// </summary>
         /// <typeparam name="TInterface"></typeparam>

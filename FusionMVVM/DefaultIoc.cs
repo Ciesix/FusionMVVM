@@ -45,10 +45,18 @@ namespace FusionMVVM
         /// <typeparam name="TInterface"></typeparam>
         public void RegisterAsSingleton<TInterface>(TInterface theObject)
         {
-            var interfaceType = typeof(TInterface);
+            RegisterAsSingleton(typeof(TInterface), theObject);
+        }
 
-            RegisterType(interfaceType, theObject.GetType());
-            _storedServices.AddOrUpdate(interfaceType, k => theObject, (k, v) => theObject);
+        /// <summary>
+        /// Registers an object as a lazy singleton. When Resolve is called, the same object is returned.
+        /// The object will be created the first time Resolve is called.
+        /// </summary>
+        /// <param name="theConstructor"></param>
+        /// <typeparam name="TInterface"></typeparam>
+        public void RegisterAsSingleton<TInterface>(Func<TInterface> theConstructor)
+        {
+            RegisterAsSingleton(typeof(TInterface), theConstructor);
         }
 
         /// <summary>
@@ -77,6 +85,14 @@ namespace FusionMVVM
             Type type;
             if (_registeredTypes.TryGetValue(interfaceType, out type))
             {
+                object lazyInstance;
+                if (_storedServices.TryGetValue(interfaceType, out lazyInstance) && lazyInstance.GetType() == typeof(Func<TInterface>))
+                {
+                    // Lazy singletons must be invoked when called first time.
+                    var invokedLazy = ((Func<TInterface>)lazyInstance).Invoke();
+                    _storedServices.AddOrUpdate(interfaceType, k => invokedLazy, (k, v) => invokedLazy);
+                }
+
                 object instance;
                 if (_storedServices.TryGetValue(interfaceType, out instance))
                 {
@@ -93,6 +109,17 @@ namespace FusionMVVM
             }
 
             return default(TInterface);
+        }
+
+        /// <summary>
+        /// Registers an interface and object as a singleton.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="theObject"></param>
+        private void RegisterAsSingleton(Type interfaceType, object theObject)
+        {
+            RegisterType(interfaceType, theObject.GetType());
+            _storedServices.AddOrUpdate(interfaceType, k => theObject, (k, v) => theObject);
         }
 
         /// <summary>

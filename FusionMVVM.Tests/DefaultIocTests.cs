@@ -79,6 +79,30 @@ namespace FusionMVVM.Tests
         }
 
         [Fact]
+        public void RegisterAsSingletonLazy_ResolveObject_NotNull()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(() => new FakeDatabaseService());
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.NotNull(service);
+            Assert.IsType<FakeDatabaseService>(service);
+        }
+
+        [Fact]
+        public void RegisterAsSingletonLazy_ResolveMultipleObject_SameObject()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(() => new FakeDatabaseService());
+
+            var first = Ioc.Current.Resolve<IFakeDatabaseService>();
+            var second = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.Same(first, second);
+        }
+
+        [Fact]
         public void Unregister_ResolveObject_Null()
         {
             Ioc.Reset();
