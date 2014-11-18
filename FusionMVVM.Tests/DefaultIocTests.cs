@@ -31,6 +31,28 @@ namespace FusionMVVM.Tests
         }
 
         [Fact]
+        public void RegisterType_NameParameterIsNull_NotNull()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>(null);
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.NotNull(service);
+        }
+
+        [Fact]
+        public void RegisterType_NameParameterIsValid_NotNull()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>("SQL");
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>("SQL");
+
+            Assert.NotNull(service);
+        }
+
+        [Fact]
         public void RegisterType_ResolveObject_NotNull()
         {
             Ioc.Reset();
@@ -76,6 +98,28 @@ namespace FusionMVVM.Tests
             var second = Ioc.Current.Resolve<IFakeDatabaseService>();
 
             Assert.Same(first, second);
+        }
+
+        [Fact]
+        public void RegisterAsSingleton_NameParameterIsNull_NotNull()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService(), null);
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.NotNull(service);
+        }
+
+        [Fact]
+        public void RegisterAsSingleton_NameParameterIsValid_NotNull()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService(), "SQL");
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>("SQL");
+
+            Assert.NotNull(service);
         }
 
         [Fact]

@@ -40,6 +40,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\TypeAndNameTests.cs" />
     <Compile Include="DefaultIocTests.cs" />
     <Compile Include="Fakes\FakeDatabaseService.cs" />
     <Compile Include="Fakes\IFakeDatabaseService.cs" />
