@@ -32,16 +32,30 @@
     <DocumentationFile>bin\Release\FusionMVVM.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\packages\JetBrains.Annotations.Core.8.2.0.2160\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModel.cs" />
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="Common\Activator.cs" />
+    <Compile Include="Common\PropertyChangedObject.cs" />
+    <Compile Include="Common\PropertyChangedObjectExtensions.cs" />
     <Compile Include="Common\TypeAndName.cs" />
     <Compile Include="DefaultIoc.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="Ioc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

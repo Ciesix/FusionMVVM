@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionMVVM", "FusionMVVM\Fu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionMVVM.Tests", "FusionMVVM.Tests\FusionMVVM.Tests.csproj", "{BF42A7D6-8992-492E-8E3E-2DABD6566046}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{CAB3C417-8185-4AE0-8B9C-4744DA122916}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BF42A7D6-8992-492E-8E3E-2DABD6566046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF42A7D6-8992-492E-8E3E-2DABD6566046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF42A7D6-8992-492E-8E3E-2DABD6566046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB3C417-8185-4AE0-8B9C-4744DA122916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB3C417-8185-4AE0-8B9C-4744DA122916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB3C417-8185-4AE0-8B9C-4744DA122916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB3C417-8185-4AE0-8B9C-4744DA122916}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
