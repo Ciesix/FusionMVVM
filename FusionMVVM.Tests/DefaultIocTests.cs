@@ -1,19 +1,12 @@
 ﻿using System;
 using FusionMVVM.Tests.Fakes;
 using Xunit;
+using Xunit.Extensions;
 
 namespace FusionMVVM.Tests
 {
     public class DefaultIocTests
     {
-        [Fact]
-        public void Resolve_WhenNothingIsRegistered_Null()
-        {
-            Ioc.Reset();
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
-            Assert.Null(service);
-        }
-
         [Fact]
         public void RegisterType_InterfaceTypeParameterIsNull_ThrowException()
         {
@@ -30,38 +23,31 @@ namespace FusionMVVM.Tests
             Assert.Equal("type", exception.ParamName);
         }
 
-        [Fact]
-        public void RegisterType_NameParameterIsNull_NotNull()
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        [InlineData(@"!@#£¤$&/\=?+-_*()[]{}")]
+        public void RegisterType_WhenNameParameterIsInvalid_ThrowException(string name)
         {
             Ioc.Reset();
-            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>(null);
-
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
-
-            Assert.NotNull(service);
+            var exception = Assert.Throws<ArgumentNullException>(() => Ioc.Current.RegisterType(typeof(IFakeDatabaseService), typeof(FakeDatabaseService), name));
+            Assert.Equal("name", exception.ParamName);
         }
 
-        [Fact]
-        public void RegisterType_NameParameterIsValid_NotNull()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("0123456789")]
+        [InlineData("abcdefghijklmnopqrstuvwxyz")]
+        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+        public void RegisterType_WhenNameParameterIsValid_NotNull(string name)
         {
             Ioc.Reset();
-            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>("SQL");
+            Ioc.Current.RegisterType(typeof(IFakeDatabaseService), typeof(FakeDatabaseService), name);
 
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>("SQL");
-
-            Assert.NotNull(service);
-        }
-
-        [Fact]
-        public void RegisterType_ResolveObject_NotNull()
-        {
-            Ioc.Reset();
-            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
-
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>(name);
 
             Assert.NotNull(service);
-            Assert.IsType<FakeDatabaseService>(service);
         }
 
         [Fact]
@@ -76,16 +62,31 @@ namespace FusionMVVM.Tests
             Assert.NotSame(first, second);
         }
 
-        [Fact]
-        public void RegisterAsSingleton_ResolveObject_NotNull()
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        [InlineData(@"!@#£¤$&/\=?+-_*()[]{}")]
+        public void RegisterAsSingleton_WhenNameParameterIsInvalid_ThrowException(string name)
         {
             Ioc.Reset();
-            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService());
+            var exception = Assert.Throws<ArgumentNullException>(() => Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService(), name));
+            Assert.Equal("name", exception.ParamName);
+        }
 
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+        [Theory]
+        [InlineData(null)]
+        [InlineData("0123456789")]
+        [InlineData("abcdefghijklmnopqrstuvwxyz")]
+        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+        public void RegisterAsSingleton_WhenNameParameterIsValid_NotNull(string name)
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService(), name);
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>(name);
 
             Assert.NotNull(service);
-            Assert.IsType<FakeDatabaseService>(service);
         }
 
         [Fact]
@@ -100,38 +101,31 @@ namespace FusionMVVM.Tests
             Assert.Same(first, second);
         }
 
-        [Fact]
-        public void RegisterAsSingleton_NameParameterIsNull_NotNull()
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        [InlineData(@"!@#£¤$&/\=?+-_*()[]{}")]
+        public void RegisterAsSingletonLazy_WhenNameParameterIsInvalid_ThrowException(string name)
         {
             Ioc.Reset();
-            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService(), null);
-
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
-
-            Assert.NotNull(service);
+            var exception = Assert.Throws<ArgumentNullException>(() => Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(() => new FakeDatabaseService(), name));
+            Assert.Equal("name", exception.ParamName);
         }
 
-        [Fact]
-        public void RegisterAsSingleton_NameParameterIsValid_NotNull()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("0123456789")]
+        [InlineData("abcdefghijklmnopqrstuvwxyz")]
+        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+        public void RegisterAsSingletonLazy_WhenNameParameterIsValid_NotNull(string name)
         {
             Ioc.Reset();
-            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService(), "SQL");
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(() => new FakeDatabaseService(), name);
 
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>("SQL");
-
-            Assert.NotNull(service);
-        }
-
-        [Fact]
-        public void RegisterAsSingletonLazy_ResolveObject_NotNull()
-        {
-            Ioc.Reset();
-            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(() => new FakeDatabaseService());
-
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>(name);
 
             Assert.NotNull(service);
-            Assert.IsType<FakeDatabaseService>(service);
         }
 
         [Fact]
@@ -147,15 +141,74 @@ namespace FusionMVVM.Tests
         }
 
         [Fact]
-        public void Unregister_ResolveObject_Null()
+        public void Unregister_InterfaceTypeParameterIsNull_ThrowException()
+        {
+            Ioc.Reset();
+            var exception = Assert.Throws<ArgumentNullException>(() => Ioc.Current.Unregister(null, null));
+            Assert.Equal("interfaceType", exception.ParamName);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
+        [InlineData(@"!@#£¤$&/\=?+-_*()[]{}")]
+        public void Unregister_WhenNameParameterIsInvalid_ThrowException(string name)
+        {
+            Ioc.Reset();
+            var exception = Assert.Throws<ArgumentNullException>(() => Ioc.Current.Unregister(typeof(IFakeDatabaseService), name));
+            Assert.Equal("name", exception.ParamName);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("0123456789")]
+        [InlineData("abcdefghijklmnopqrstuvwxyz")]
+        [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+        public void Unregister_WhenNameParameterIsValid_Null(string name)
+        {
+            Ioc.Reset();
+            Ioc.Current.Unregister(typeof(IFakeDatabaseService), name);
+
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>(name);
+
+            Assert.Null(service);
+        }
+
+        [Fact]
+        public void Resolve_WhenNothingIsRegistered_Null()
+        {
+            Ioc.Reset();
+            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+            Assert.Null(service);
+        }
+
+        [Fact]
+        public void RegisterType_LastRegisteredWins_NotSameObjects()
         {
             Ioc.Reset();
             Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService());
+            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
 
-            Ioc.Current.Unregister<IFakeDatabaseService>();
-            var service = Ioc.Current.Resolve<IFakeDatabaseService>();
+            var first = Ioc.Current.Resolve<IFakeDatabaseService>();
+            var second = Ioc.Current.Resolve<IFakeDatabaseService>();
 
-            Assert.Null(service);
+            Assert.NotSame(first, second);
+        }
+
+        [Fact]
+        public void RegisterAsSingleton_LastRegisteredWins_SameObjects()
+        {
+            Ioc.Reset();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService());
+            Ioc.Current.RegisterType<IFakeDatabaseService, FakeDatabaseService>();
+            Ioc.Current.RegisterAsSingleton<IFakeDatabaseService>(new FakeDatabaseService());
+
+            var first = Ioc.Current.Resolve<IFakeDatabaseService>();
+            var second = Ioc.Current.Resolve<IFakeDatabaseService>();
+
+            Assert.Same(first, second);
         }
     }
 }

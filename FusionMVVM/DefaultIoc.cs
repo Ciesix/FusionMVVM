@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FusionMVVM.Common;
 
 namespace FusionMVVM
@@ -17,7 +18,7 @@ namespace FusionMVVM
         /// <typeparam name="TType"></typeparam>
         public void RegisterType<TInterface, TType>()
         {
-            RegisterType<TInterface, TType>(null);
+            RegisterType(typeof(TInterface), typeof(TType), null);
         }
 
         /// <summary>
@@ -28,10 +29,7 @@ namespace FusionMVVM
         /// <typeparam name="TType"></typeparam>
         public void RegisterType<TInterface, TType>(string name)
         {
-            var interfaceType = typeof(TInterface);
-
-            RegisterType(interfaceType, typeof(TType), name);
-            CleanupServices(interfaceType, name);
+            RegisterType(typeof(TInterface), typeof(TType), name);
         }
 
         /// <summary>
@@ -54,8 +52,12 @@ namespace FusionMVVM
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (type == null) throw new ArgumentNullException("type");
+            if (IsNameNullOrValid(name) == false) throw new ArgumentNullException("name");
 
             var typeAndName = new TypeAndName(interfaceType, name);
+
+            // Cleanup previous stored services, with the same interface type and name.
+            CleanupServices(interfaceType, name);
 
             // Add the typeAndName/type or update a previous registered type, with the same
             // typeAndName.
@@ -112,7 +114,7 @@ namespace FusionMVVM
         /// <typeparam name="TInterface"></typeparam>
         public void Unregister<TInterface>()
         {
-            Unregister<TInterface>(null);
+            Unregister(typeof(TInterface), null);
         }
 
         /// <summary>
@@ -122,7 +124,19 @@ namespace FusionMVVM
         /// <typeparam name="TInterface"></typeparam>
         public void Unregister<TInterface>(string name)
         {
-            var interfaceType = typeof(TInterface);
+            Unregister(typeof(TInterface), null);
+        }
+
+        /// <summary>
+        /// Unregisters a service with a name. When this method is called, everything related is removed.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="name"></param>
+        public void Unregister(Type interfaceType, string name)
+        {
+            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            if (IsNameNullOrValid(name) == false) throw new ArgumentNullException("name");
+
             var typeAndName = new TypeAndName(interfaceType, name);
 
             Type type;
@@ -206,6 +220,23 @@ namespace FusionMVVM
 
             object instance;
             _storedServices.TryRemove(typeAndName, out instance);
+        }
+
+        /// <summary>
+        /// Returns true if the name is NULL or valid. Only names with numbers
+        /// and letters are valid.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool IsNameNullOrValid(string name)
+        {
+            if (name == null) return true;
+
+            // Remove all non alphanumeric characters.
+            var regex = new Regex("[^0-9a-zA-Z]+");
+            name = regex.Replace(name, string.Empty);
+
+            return string.IsNullOrWhiteSpace(name) == false;
         }
     }
 }

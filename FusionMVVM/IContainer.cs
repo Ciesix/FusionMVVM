@@ -80,6 +80,13 @@ namespace FusionMVVM
         void Unregister<TInterface>(string name);
 
         /// <summary>
+        /// Unregisters a service with a name. When this method is called, everything related is removed.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="name"></param>
+        void Unregister(Type interfaceType, string name);
+
+        /// <summary>
         /// Resolves the last registered service.
         /// </summary>
         /// <typeparam name="TInterface"></typeparam>
