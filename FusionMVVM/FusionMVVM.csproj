@@ -46,6 +46,8 @@
     <Compile Include="BaseModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Common\Activator.cs" />
+    <Compile Include="Common\Levenshtein.cs" />
+    <Compile Include="Common\NamespaceHelper.cs" />
     <Compile Include="Common\PropertyChangedObject.cs" />
     <Compile Include="Common\PropertyChangedObjectExtensions.cs" />
     <Compile Include="Common\TypeAndName.cs" />
@@ -53,6 +55,8 @@
     <Compile Include="IContainer.cs" />
     <Compile Include="Ioc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\IWindowLocator.cs" />
+    <Compile Include="Service\WindowLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

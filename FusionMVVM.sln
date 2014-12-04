@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{CAB3C417-8185-4AE0-8B9C-4744DA122916}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionMVVM", "FusionMVVM\FusionMVVM.csproj", "{A7D5E1A1-52A6-4554-8AEF-BC9480B749D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionMVVM.Tests", "FusionMVVM.Tests\FusionMVVM.Tests.csproj", "{BF42A7D6-8992-492E-8E3E-2DABD6566046}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{CAB3C417-8185-4AE0-8B9C-4744DA122916}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
