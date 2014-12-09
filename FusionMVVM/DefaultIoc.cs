@@ -188,8 +188,8 @@ namespace FusionMVVM
                 var constructor = type.GetConstructors().First();
 
                 // Create a new instance and return it.
-                var activator = Activator<TInterface>.GetActivator(constructor);
-                return activator();
+                var activator = Common.Activator.GetActivator(constructor);
+                return (TInterface)activator();
             }
 
             return default(TInterface);

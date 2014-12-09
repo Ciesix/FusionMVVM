@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel, IsDesignTimeCreatable=True}"
         Title="MainView"
+        WindowStartupLocation="CenterScreen"
         Height="350" Width="525">
 
     <Grid/>

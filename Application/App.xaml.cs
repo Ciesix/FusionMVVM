@@ -15,10 +15,15 @@ namespace Application
         {
             try
             {
+                // Add services to the Ioc container.
                 Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator());
 
+                // Register windows in the WindowLocator service.
                 var windowLocator = Ioc.Current.Resolve<IWindowLocator>();
                 windowLocator.Register<MainViewModel>();
+
+                // Shows the main window.
+                windowLocator.ShowWindow(new MainViewModel());
             }
             catch (Exception ex)
             {

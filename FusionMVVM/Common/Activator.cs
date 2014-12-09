@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace FusionMVVM.Common
 {
-    internal class Activator<T>
+    internal class Activator
     {
-        public delegate T ObjectActivator(params object[] args);
+        public delegate object ObjectActivator(params object[] args);
 
         /// <summary>
         /// Create a new instance of the given ConstructorInfo.
