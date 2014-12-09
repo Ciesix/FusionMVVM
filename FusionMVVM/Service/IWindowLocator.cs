@@ -29,5 +29,11 @@ namespace FusionMVVM.Service
         /// <param name="viewModel"></param>
         /// <param name="owner"></param>
         void ShowWindow(BaseViewModel viewModel, BaseViewModel owner);
+
+        /// <summary>
+        /// Closes a window with the given ViewModel.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        void CloseWindow(BaseViewModel viewModel);
     }
 }

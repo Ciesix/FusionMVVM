@@ -70,6 +70,20 @@ namespace FusionMVVM.Service
         }
 
         /// <summary>
+        /// Closes a window with the given ViewModel.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        public void CloseWindow(BaseViewModel viewModel)
+        {
+            Window window;
+            if (_openedWindows.TryGetValue(viewModel.GetHashCode(), out window))
+            {
+                // Close the window.
+                window.Close();
+            }
+        }
+
+        /// <summary>
         /// Gets the base name of the ViewModel name.
         /// </summary>
         /// <param name="viewModel"></param>
