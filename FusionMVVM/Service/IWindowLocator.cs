@@ -31,6 +31,20 @@ namespace FusionMVVM.Service
         void ShowWindow(BaseViewModel viewModel, BaseViewModel owner);
 
         /// <summary>
+        /// Shows a window as a dialog and sets the ViewModel as a DataContext.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        void ShowDialogWindow(BaseViewModel viewModel);
+
+        /// <summary>
+        /// Shows a window as a dialog and sets the ViewModel as a DataContext.
+        /// Also set the owner of the window to the current ViewModels window.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <param name="owner"></param>
+        void ShowDialogWindow(BaseViewModel viewModel, BaseViewModel owner);
+
+        /// <summary>
         /// Closes a window with the given ViewModel.
         /// </summary>
         /// <param name="viewModel"></param>
