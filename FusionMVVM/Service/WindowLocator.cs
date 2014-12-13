@@ -34,7 +34,7 @@ namespace FusionMVVM.Service
             // Convert the View name to a type.
             var viewType = Type.GetType(viewName + ", " + assembly.FullName);
 
-            if (viewType != null && viewType.Name.EndsWith("View"))
+            if (viewType != null && viewType.BaseType == typeof(Window))
             {
                 RegisteredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
             }
