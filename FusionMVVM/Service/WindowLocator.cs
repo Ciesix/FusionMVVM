@@ -59,7 +59,7 @@ namespace FusionMVVM.Service
         /// Shows a window and sets the ViewModel as a DataContext.
         /// </summary>
         /// <param name="viewModel"></param>
-        public void ShowWindow(BaseViewModel viewModel)
+        public void ShowWindow(ViewModelBase viewModel)
         {
             ShowWindow(viewModel, null);
         }
@@ -70,7 +70,7 @@ namespace FusionMVVM.Service
         /// </summary>
         /// <param name="viewModel"></param>
         /// <param name="owner"></param>
-        public void ShowWindow(BaseViewModel viewModel, BaseViewModel owner)
+        public void ShowWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
             var window = CreateWindow(viewModel, owner);
             if (OpenedWindows.TryAdd(viewModel.GetHashCode(), window))
@@ -83,7 +83,7 @@ namespace FusionMVVM.Service
         /// Shows a window as a dialog and sets the ViewModel as a DataContext.
         /// </summary>
         /// <param name="viewModel"></param>
-        public void ShowDialogWindow(BaseViewModel viewModel)
+        public void ShowDialogWindow(ViewModelBase viewModel)
         {
             ShowDialogWindow(viewModel, null);
         }
@@ -94,7 +94,7 @@ namespace FusionMVVM.Service
         /// </summary>
         /// <param name="viewModel"></param>
         /// <param name="owner"></param>
-        public void ShowDialogWindow(BaseViewModel viewModel, BaseViewModel owner)
+        public void ShowDialogWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
             var window = CreateWindow(viewModel, owner);
             if (OpenedWindows.TryAdd(viewModel.GetHashCode(), window))
@@ -107,7 +107,7 @@ namespace FusionMVVM.Service
         /// Closes a window with the given ViewModel.
         /// </summary>
         /// <param name="viewModel"></param>
-        public void CloseWindow(BaseViewModel viewModel)
+        public void CloseWindow(ViewModelBase viewModel)
         {
             Window window;
             if (OpenedWindows.TryGetValue(viewModel.GetHashCode(), out window))

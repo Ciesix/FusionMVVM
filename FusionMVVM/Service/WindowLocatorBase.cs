@@ -35,7 +35,7 @@ namespace FusionMVVM.Service
         /// <param name="viewModel"></param>
         /// <param name="owner"></param>
         /// <returns></returns>
-        protected virtual Window CreateWindow(BaseViewModel viewModel, BaseViewModel owner)
+        protected virtual Window CreateWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
             var viewModelType = viewModel.GetType();
             Window window = null;

@@ -43,8 +43,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseModel.cs" />
-    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="ModelBase.cs" />
+    <Compile Include="ViewModelBase.cs" />
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Command\RelayCommandBase.cs" />
     <Compile Include="Common\Activator.cs" />

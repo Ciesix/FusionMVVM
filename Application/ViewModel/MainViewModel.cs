@@ -2,7 +2,7 @@
 
 namespace Application.ViewModel
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : ViewModelBase
     {
     }
 }

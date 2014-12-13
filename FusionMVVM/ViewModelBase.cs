@@ -6,7 +6,7 @@ using FusionMVVM.Common;
 
 namespace FusionMVVM
 {
-    public abstract class BaseViewModel : PropertyChangedObject
+    public abstract class ViewModelBase : PropertyChangedObject
     {
         #region IsInDesignMode property
 

@@ -25,7 +25,7 @@ namespace FusionMVVM.Service
         /// Shows a window and sets the ViewModel as a DataContext.
         /// </summary>
         /// <param name="viewModel"></param>
-        void ShowWindow(BaseViewModel viewModel);
+        void ShowWindow(ViewModelBase viewModel);
 
         /// <summary>
         /// Shows a window and sets the ViewModel as a DataContext.
@@ -33,13 +33,13 @@ namespace FusionMVVM.Service
         /// </summary>
         /// <param name="viewModel"></param>
         /// <param name="owner"></param>
-        void ShowWindow(BaseViewModel viewModel, BaseViewModel owner);
+        void ShowWindow(ViewModelBase viewModel, ViewModelBase owner);
 
         /// <summary>
         /// Shows a window as a dialog and sets the ViewModel as a DataContext.
         /// </summary>
         /// <param name="viewModel"></param>
-        void ShowDialogWindow(BaseViewModel viewModel);
+        void ShowDialogWindow(ViewModelBase viewModel);
 
         /// <summary>
         /// Shows a window as a dialog and sets the ViewModel as a DataContext.
@@ -47,12 +47,12 @@ namespace FusionMVVM.Service
         /// </summary>
         /// <param name="viewModel"></param>
         /// <param name="owner"></param>
-        void ShowDialogWindow(BaseViewModel viewModel, BaseViewModel owner);
+        void ShowDialogWindow(ViewModelBase viewModel, ViewModelBase owner);
 
         /// <summary>
         /// Closes a window with the given ViewModel.
         /// </summary>
         /// <param name="viewModel"></param>
-        void CloseWindow(BaseViewModel viewModel);
+        void CloseWindow(ViewModelBase viewModel);
     }
 }
