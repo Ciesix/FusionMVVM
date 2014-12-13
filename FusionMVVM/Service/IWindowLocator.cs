@@ -17,6 +17,11 @@ namespace FusionMVVM.Service
         void Register(Type viewModelType);
 
         /// <summary>
+        /// Registers all windows with a matching ViewModel name.
+        /// </summary>
+        void RegisterAll();
+
+        /// <summary>
         /// Shows a window and sets the ViewModel as a DataContext.
         /// </summary>
         /// <param name="viewModel"></param>

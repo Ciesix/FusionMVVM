@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using FusionMVVM.Common;
@@ -33,9 +34,24 @@ namespace FusionMVVM.Service
             // Convert the View name to a type.
             var viewType = Type.GetType(viewName + ", " + assembly.FullName);
 
-            if (viewType != null)
+            if (viewType != null && viewType.Name.EndsWith("View"))
             {
                 RegisteredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
+            }
+        }
+
+        /// <summary>
+        /// Registers all windows with a matching ViewModel name.
+        /// </summary>
+        public void RegisterAll()
+        {
+            var viewModelTypes = from type in Assembly.GetEntryAssembly().GetTypes()
+                                 where type.Namespace != null && (type.IsClass && type.Namespace.EndsWith("ViewModel"))
+                                 select type;
+
+            foreach (var viewModelType in viewModelTypes)
+            {
+                Register(viewModelType);
             }
         }
 

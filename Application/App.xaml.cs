@@ -20,7 +20,7 @@ namespace Application
 
                 // Register windows in the WindowLocator service.
                 var windowLocator = Ioc.Current.Resolve<IWindowLocator>();
-                windowLocator.Register<MainViewModel>();
+                windowLocator.RegisterAll();
 
                 // Shows the main window.
                 windowLocator.ShowWindow(new MainViewModel());
