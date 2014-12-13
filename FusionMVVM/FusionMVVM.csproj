@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Command\RelayCommand.cs" />
+    <Compile Include="Command\RelayCommandBase.cs" />
     <Compile Include="Common\Activator.cs" />
     <Compile Include="Common\Levenshtein.cs" />
     <Compile Include="Common\NamespaceHelper.cs" />
