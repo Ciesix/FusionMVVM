@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace FusionMVVM.Service
 {
-    public class WindowLocatorBase
+    public abstract class WindowLocatorBase
     {
         protected readonly ConcurrentDictionary<Type, Type> RegisteredTypes = new ConcurrentDictionary<Type, Type>();
         protected readonly ConcurrentDictionary<int, Window> OpenedWindows = new ConcurrentDictionary<int, Window>();
