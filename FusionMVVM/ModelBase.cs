@@ -2,7 +2,7 @@
 
 namespace FusionMVVM
 {
-    public class ModelBase : PropertyChangedObject
+    public abstract class ModelBase : PropertyChangedObject
     {
     }
 }

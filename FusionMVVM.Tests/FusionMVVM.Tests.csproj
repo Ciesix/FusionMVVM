@@ -44,7 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\TypeAndNameTests.cs" />
+    <Compile Include="ContainerBaseTests.cs" />
     <Compile Include="DefaultIocTests.cs" />
+    <Compile Include="Fakes\FakeContainerBase.cs" />
     <Compile Include="Fakes\FakeDatabaseService.cs" />
     <Compile Include="Fakes\IFakeDatabaseService.cs" />
     <Compile Include="IocTests.cs" />

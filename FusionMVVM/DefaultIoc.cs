@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Linq;
-using System.Text.RegularExpressions;
 using FusionMVVM.Common;
 
 namespace FusionMVVM
 {
-    internal class DefaultIoc : IContainer
+    internal class DefaultIoc : ContainerBase, IContainer
     {
-        private readonly ConcurrentDictionary<TypeAndName, Type> _registeredTypes = new ConcurrentDictionary<TypeAndName, Type>();
-        private readonly ConcurrentDictionary<TypeAndName, object> _storedServices = new ConcurrentDictionary<TypeAndName, object>();
-
         /// <summary>
         /// Registers a type. When Resolve is called, a new object will be create.
         /// </summary>
@@ -22,7 +17,8 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Registers a type with a name. When Resolve is called, a new object will be create.
+        /// Registers a type with a name. When Resolve is called, a new object will 
+        /// be create.
         /// </summary>
         /// <param name="name"></param>
         /// <typeparam name="TInterface"></typeparam>
@@ -43,7 +39,8 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Registers a type with a name. When Resolve is called, a new object will be create.
+        /// Registers a type with a name. When Resolve is called, a new object will
+        /// be create.
         /// </summary>
         /// <param name="interfaceType"></param>
         /// <param name="type"></param>
@@ -61,11 +58,12 @@ namespace FusionMVVM
 
             // Add the typeAndName/type or update a previous registered type, with the same
             // typeAndName.
-            _registeredTypes.AddOrUpdate(typeAndName, k => type, (k, v) => type);
+            RegisteredTypes.AddOrUpdate(typeAndName, k => type, (k, v) => type);
         }
 
         /// <summary>
-        /// Registers an object as a singleton. When Resolve is called, the same object is returned.
+        /// Registers an object as a singleton. When Resolve is called, the same
+        ///  object is returned.
         /// </summary>
         /// <param name="theObject"></param>
         /// <typeparam name="TInterface"></typeparam>
@@ -75,7 +73,8 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Registers an object as a singleton with a name. When Resolve is called, the same object is returned.
+        /// Registers an object as a singleton with a name. When Resolve is called,
+        /// the same object is returned.
         /// </summary>
         /// <param name="theObject"></param>
         /// <param name="name"></param>
@@ -86,8 +85,9 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Registers an object as a lazy singleton. When Resolve is called, the same object is returned.
-        /// The object will be created the first time Resolve is called.
+        /// Registers an object as a lazy singleton. When Resolve is called, the
+        /// same object is returned. The object will be created the first time
+        /// Resolve is called.
         /// </summary>
         /// <param name="theConstructor"></param>
         /// <typeparam name="TInterface"></typeparam>
@@ -97,8 +97,9 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Registers an object as a lazy singleton with a name. When Resolve is called, the same object is returned.
-        /// The object will be created the first time Resolve is called.
+        /// Registers an object as a lazy singleton with a name. When Resolve is
+        /// called, the same object is returned. The object will be created the
+        /// first time Resolve is called.
         /// </summary>
         /// <param name="theConstructor"></param>
         /// <param name="name"></param>
@@ -109,7 +110,23 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Unregisters a service. When this method is called, everything related is removed.
+        /// Registers an object as a singleton with a name. When Resolve is called,
+        /// the same object is returned.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="theObject"></param>
+        /// <param name="name"></param>
+        public void RegisterAsSingleton(Type interfaceType, object theObject, string name)
+        {
+            var typeAndName = new TypeAndName(interfaceType, name);
+
+            RegisterType(interfaceType, theObject.GetType(), name);
+            StoredServices.AddOrUpdate(typeAndName, k => theObject, (k, v) => theObject);
+        }
+
+        /// <summary>
+        /// Unregisters a service. When this method is called, everything related
+        /// is removed.
         /// </summary>
         /// <typeparam name="TInterface"></typeparam>
         public void Unregister<TInterface>()
@@ -118,7 +135,8 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Unregisters a service with a name. When this method is called, everything related is removed.
+        /// Unregisters a service with a name. When this method is called,
+        /// everything related is removed.
         /// </summary>
         /// <param name="name"></param>
         /// <typeparam name="TInterface"></typeparam>
@@ -128,7 +146,8 @@ namespace FusionMVVM
         }
 
         /// <summary>
-        /// Unregisters a service with a name. When this method is called, everything related is removed.
+        /// Unregisters a service with a name. When this method is called,
+        /// everything related is removed.
         /// </summary>
         /// <param name="interfaceType"></param>
         /// <param name="name"></param>
@@ -140,7 +159,7 @@ namespace FusionMVVM
             var typeAndName = new TypeAndName(interfaceType, name);
 
             Type type;
-            _registeredTypes.TryRemove(typeAndName, out type);
+            RegisteredTypes.TryRemove(typeAndName, out type);
 
             CleanupServices(interfaceType, name);
         }
@@ -167,18 +186,18 @@ namespace FusionMVVM
             var typeAndName = new TypeAndName(interfaceType, name);
 
             Type type;
-            if (_registeredTypes.TryGetValue(typeAndName, out type))
+            if (RegisteredTypes.TryGetValue(typeAndName, out type))
             {
                 object lazyInstance;
-                if (_storedServices.TryGetValue(typeAndName, out lazyInstance) && lazyInstance.GetType() == typeof(Func<TInterface>))
+                if (StoredServices.TryGetValue(typeAndName, out lazyInstance) && lazyInstance.GetType() == typeof(Func<TInterface>))
                 {
                     // Lazy singletons must be invoked when called first time.
                     var invokedLazy = ((Func<TInterface>)lazyInstance).Invoke();
-                    _storedServices.AddOrUpdate(typeAndName, k => invokedLazy, (k, v) => invokedLazy);
+                    StoredServices.AddOrUpdate(typeAndName, k => invokedLazy, (k, v) => invokedLazy);
                 }
 
                 object instance;
-                if (_storedServices.TryGetValue(typeAndName, out instance))
+                if (StoredServices.TryGetValue(typeAndName, out instance))
                 {
                     // Return the stored singleton object.
                     return (TInterface)instance;
@@ -193,50 +212,6 @@ namespace FusionMVVM
             }
 
             return default(TInterface);
-        }
-
-        /// <summary>
-        /// Registers an interface and object as a singleton.
-        /// </summary>
-        /// <param name="interfaceType"></param>
-        /// <param name="theObject"></param>
-        /// <param name="name"></param>
-        private void RegisterAsSingleton(Type interfaceType, object theObject, string name)
-        {
-            var typeAndName = new TypeAndName(interfaceType, name);
-
-            RegisterType(interfaceType, theObject.GetType(), name);
-            _storedServices.AddOrUpdate(typeAndName, k => theObject, (k, v) => theObject);
-        }
-
-        /// <summary>
-        /// Cleanup stored services with the matching interface type.
-        /// </summary>
-        /// <param name="interfaceType"></param>
-        /// <param name="name"></param>
-        private void CleanupServices(Type interfaceType, string name)
-        {
-            var typeAndName = new TypeAndName(interfaceType, name);
-
-            object instance;
-            _storedServices.TryRemove(typeAndName, out instance);
-        }
-
-        /// <summary>
-        /// Returns true if the name is NULL or valid. Only names with numbers
-        /// and letters are valid.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        private bool IsNameNullOrValid(string name)
-        {
-            if (name == null) return true;
-
-            // Remove all non alphanumeric characters.
-            var regex = new Regex("[^0-9a-zA-Z]+");
-            name = regex.Replace(name, string.Empty);
-
-            return string.IsNullOrWhiteSpace(name) == false;
         }
     }
 }
