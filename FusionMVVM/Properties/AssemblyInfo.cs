@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Dennis Madsen")]
 [assembly: AssemblyProduct("FusionMVVM")]
-[assembly: AssemblyCopyright("Copyright © 2014 Dennis Madsen. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2015 Dennis Madsen. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
