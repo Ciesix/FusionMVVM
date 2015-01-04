@@ -63,6 +63,7 @@
     <Compile Include="Service\WindowLocatorBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="FusionMVVM.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
