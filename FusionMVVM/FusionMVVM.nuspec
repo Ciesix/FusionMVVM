@@ -8,10 +8,10 @@
     <owners>$author$</owners>
     <licenseUrl>https://github.com/Ciesix/FusionMVVM/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Ciesix/FusionMVVM</projectUrl>
-    <iconUrl></iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/Ciesix/FusionMVVM/master/Icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>Initial alpha release. All ViewModels and Models should inherit from the abstract base classes. Ioc container that supports normal and singleton objects, for loosely coupled design. RelayCommand to execute actions in ViewModels. WindowLocator to control Views from their ViewModels. For more information about the features, visit the Wiki on GitHub.</releaseNotes>
     <copyright>Copyright © 2015 Dennis Madsen. All rights reserved.</copyright>
     <tags>C# WPF MVVM Toolkit Library</tags>
   </metadata>
