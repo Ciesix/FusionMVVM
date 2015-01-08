@@ -3,9 +3,11 @@ FusionMVVM
 
 FusionMVVM is a toolkit made for [WPF][wpf], and provides some easy-to-use features for creating [MVVM][mvvm] applications, with focus on dependency injection and loosely-coupled design.
 
-## Documentation
+## Documentation and Changelog
 
 See the [Wiki][wiki] for full documentation, feature information and examples.
+
+Visit the [changelog](CHANGELOG.md) to see a complete list of changes.
 
 ## Bugs and Feedback
 
