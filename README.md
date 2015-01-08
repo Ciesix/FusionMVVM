@@ -13,7 +13,7 @@ For bugs, questions and discussions please use the [GitHub Issues][issues].
 
 ## Where can I get this?
 
-FusionMVVM is available on [NuGet][nuget] (select the latest prerelease under _Version History_).
+FusionMVVM is available on [NuGet][nuget] (select the latest prerelease under _Version History_). You can also find a tagged release on the [releases][releases] page.
 
 ## License
 
@@ -41,6 +41,7 @@ SOFTWARE.
 
 [wiki]: https://github.com/Ciesix/FusionMVVM/wiki
 [issues]: https://github.com/Ciesix/FusionMVVM/issues
+[releases]: https://github.com/Ciesix/FusionMVVM/releases
 
 [wpf]: http://en.wikipedia.org/wiki/Windows_Presentation_Foundation
 [mvvm]: http://en.wikipedia.org/wiki/Model_View_ViewModel
