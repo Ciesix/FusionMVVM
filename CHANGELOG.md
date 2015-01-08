@@ -1,6 +1,7 @@
 ## Next
 
 **Features**
+
 - Switch to the official ReSharper Annotations.
 
 ## 2.0.0-alpha1 (2015-01-04)
