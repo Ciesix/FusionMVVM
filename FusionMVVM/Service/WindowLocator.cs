@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -41,17 +42,35 @@ namespace FusionMVVM.Service
         }
 
         /// <summary>
-        /// Registers all windows with a matching ViewModel name.
+        /// Registers all windows with a matching ViewModel name in the entry assembly.
         /// </summary>
         public void RegisterAll()
         {
-            var viewModelTypes = from type in Assembly.GetEntryAssembly().GetTypes()
-                                 where type.Namespace != null && (type.IsClass && type.Namespace.EndsWith("ViewModel"))
-                                 select type;
+            RegisterAll(false);
+        }
 
-            foreach (var viewModelType in viewModelTypes)
+        /// <summary>
+        /// Registers all windows with a matching ViewModel name in the entry assembly.
+        /// If includeReferencedAssemblies is true, all referenced assemblies are also searched.
+        /// </summary>
+        /// <param name="includeReferencedAssemblies"></param>
+        public void RegisterAll(bool includeReferencedAssemblies)
+        {
+            var entryAssembly = Assembly.GetEntryAssembly();
+            var assemblies = new List<Assembly> { entryAssembly };
+
+            if (includeReferencedAssemblies)
             {
-                Register(viewModelType);
+                var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
+                assemblies.AddRange(referencedAssemblies.Select(Assembly.Load));
+            }
+
+            foreach (var assembly in assemblies)
+            {
+                foreach (var viewModelType in GetViewModelTypes(assembly.GetTypes()))
+                {
+                    Register(viewModelType);
+                }
             }
         }
 

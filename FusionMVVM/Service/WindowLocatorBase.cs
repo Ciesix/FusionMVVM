@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -79,6 +80,22 @@ namespace FusionMVVM.Service
 
             Window closedWindow;
             OpenedWindows.TryRemove(viewModel.GetHashCode(), out closedWindow);
+        }
+
+        /// <summary>
+        /// Returns a collection of ViewModel types from given assembly types.
+        /// </summary>
+        /// <param name="assemblyTypes"></param>
+        /// <returns></returns>
+        protected virtual IEnumerable<Type> GetViewModelTypes(IEnumerable<Type> assemblyTypes)
+        {
+            if (assemblyTypes == null) throw new ArgumentNullException("assemblyTypes");
+
+            var result = from type in assemblyTypes
+                         where type.FullName != null && (type.IsClass && type.FullName.EndsWith("ViewModel", StringComparison.OrdinalIgnoreCase))
+                         select type;
+
+            return result;
         }
     }
 }
