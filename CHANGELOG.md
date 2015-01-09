@@ -1,8 +1,9 @@
-## Next
+## 2.0.0-alpha2 (2015-01-10)
 
 **Features**
 
-- Switch to the official ReSharper Annotations.
+- [#17] Switch to the official ReSharper Annotations.
+- [#16] Include referenced assemblies.
 
 ## 2.0.0-alpha1 (2015-01-04)
 
