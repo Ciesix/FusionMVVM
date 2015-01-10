@@ -18,11 +18,16 @@ namespace FusionMVVM.Service
         /// <returns></returns>
         protected virtual string GetBaseName(string viewModel)
         {
-            if (string.IsNullOrWhiteSpace(viewModel)) throw new ArgumentNullException("viewModel");
+            if (viewModel == null) throw new ArgumentNullException("viewModel");
 
-            var index = viewModel.LastIndexOf("viewmodel", StringComparison.OrdinalIgnoreCase);
+            // Trim spaces.
+            viewModel = viewModel.Trim();
+
+            // Find the index of 'ViewModel'.
+            var index = viewModel.IndexOf("ViewModel", StringComparison.Ordinal);
             if (index != -1)
             {
+                // Trim 'ViewModel' from the name.
                 var name = viewModel.Substring(0, index);
                 return name;
             }
