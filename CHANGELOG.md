@@ -4,6 +4,10 @@
 
 - [#19] WindowLocatorBase.GetBaseName tests.
 
+**Bugfixes**
+
+- [#18] ReSharper Annotations attributes are erased from metadata by default.
+
 ## 2.0.0-alpha2 (2015-01-10)
 
 **Features**
