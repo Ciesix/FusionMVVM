@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using FusionMVVM.Common;
 
 namespace FusionMVVM.Service
 {
@@ -63,9 +65,49 @@ namespace FusionMVVM.Service
                     // Set the window owner to the ownerWindow.
                     window.Owner = ownerWindow;
                 }
+
+                AutoloadUserControls(window);
             }
 
             return window;
+        }
+
+        /// <summary>
+        /// Automatically load UserControls with matching names.
+        /// </summary>
+        /// <param name="window"></param>
+        protected virtual void AutoloadUserControls(Window window)
+        {
+            if (window == null) throw new ArgumentNullException("window");
+
+            // Finds all ContentControls in the window, that has a name.
+            var contentControls = window.FindLogicalChildren<ContentControl>().Where(control => string.IsNullOrWhiteSpace(control.Name) == false);
+
+            foreach (var contentControl in contentControls)
+            {
+                var propertyName = contentControl.Name;
+                var viewModel = contentControl.DataContext as ViewModelBase;
+
+                if (viewModel != null)
+                {
+                    Type viewType;
+
+                    // Find the property with the same name as the ContentControl.
+                    var property = viewModel.GetType().GetProperties().FirstOrDefault(propertyInfo => propertyInfo.Name == propertyName);
+
+                    if (property != null && RegisteredTypes.TryGetValue(property.PropertyType, out viewType))
+                    {
+                        // Create the UserControl object.
+                        var constructor = viewType.GetConstructors().First();
+                        var activator = Common.Activator.GetActivator(constructor);
+                        var userControl = (UserControl)activator();
+
+                        // Attach the child ViewModel and View.
+                        contentControl.DataContext = property.GetValue(viewModel);
+                        contentControl.Content = userControl;
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -44,6 +44,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DependencyObjectExtensions.cs" />
     <Compile Include="ContainerBase.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ViewModelBase.cs" />

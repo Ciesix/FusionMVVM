@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using FusionMVVM.Common;
 
 namespace FusionMVVM.Service
@@ -35,7 +36,7 @@ namespace FusionMVVM.Service
             // Convert the View name to a type.
             var viewType = Type.GetType(viewName + ", " + assembly.FullName);
 
-            if (viewType != null && viewType.BaseType == typeof(Window))
+            if (viewType != null && (viewType.BaseType == typeof(Window) || viewType.BaseType == typeof(UserControl)))
             {
                 RegisteredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
             }
