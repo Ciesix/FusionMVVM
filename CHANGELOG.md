@@ -3,6 +3,7 @@
 **Features**
 
 - [#19] WindowLocatorBase.GetBaseName tests.
+- [#21] Autoload UserControls in Window.
 
 **Bugfixes**
 
