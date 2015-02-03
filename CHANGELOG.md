@@ -4,6 +4,7 @@
 
 - [#19] WindowLocatorBase.GetBaseName tests.
 - [#21] Autoload UserControls in Window.
+- [#20] Automatically bind a UserControl to the parent Window.
 
 **Bugfixes**
 
