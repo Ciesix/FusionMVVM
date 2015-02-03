@@ -11,8 +11,13 @@
     <iconUrl>https://raw.githubusercontent.com/Ciesix/FusionMVVM/master/Icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>- [#17] Switch to the official ReSharper Annotations.
-- [#16] Include referenced assemblies.
+    <releaseNotes>Features
+- [#19] WindowLocatorBase.GetBaseName tests.
+- [#21] Autoload UserControls in Window.
+- [#20] Automatically bind a UserControl to the parent Window.
+
+Bugfixes
+- [#18] ReSharper Annotations attributes are erased from metadata by default.
     </releaseNotes>
     <copyright>Copyright © 2015 Dennis Madsen. All rights reserved.</copyright>
     <tags>C# WPF MVVM Toolkit Library</tags>
