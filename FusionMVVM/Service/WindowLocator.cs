@@ -130,7 +130,11 @@ namespace FusionMVVM.Service
         public void CloseWindow(ViewModelBase viewModel)
         {
             Window window;
-            if (OpenedWindows.TryGetValue(viewModel.GetHashCode(), out window))
+
+            var owner = UserControlOwners.FirstOrDefault(pair => pair.Value.Contains(viewModel.GetHashCode()));
+            var hashCode = owner.Key != 0 ? owner.Key : viewModel.GetHashCode();
+
+            if (OpenedWindows.TryGetValue(hashCode, out window))
             {
                 // Close the window.
                 window.Close();

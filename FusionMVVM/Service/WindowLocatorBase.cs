@@ -12,6 +12,7 @@ namespace FusionMVVM.Service
     {
         protected readonly ConcurrentDictionary<Type, Type> RegisteredTypes = new ConcurrentDictionary<Type, Type>();
         protected readonly ConcurrentDictionary<int, Window> OpenedWindows = new ConcurrentDictionary<int, Window>();
+        protected readonly ConcurrentDictionary<int, List<int>> UserControlOwners = new ConcurrentDictionary<int, List<int>>();
 
         /// <summary>
         /// Gets the base name of the ViewModel name.
@@ -92,6 +93,9 @@ namespace FusionMVVM.Service
                 {
                     Type viewType;
 
+                    // Gets a collection of the owners UserControl's.
+                    var owner = UserControlOwners.GetOrAdd(viewModel.GetHashCode(), k => new List<int>());
+
                     // Find the property with the same name as the ContentControl.
                     var property = viewModel.GetType().GetProperties().FirstOrDefault(propertyInfo => propertyInfo.Name == propertyName);
 
@@ -103,8 +107,12 @@ namespace FusionMVVM.Service
                         var userControl = (UserControl)activator();
 
                         // Attach the child ViewModel and View.
-                        contentControl.DataContext = property.GetValue(viewModel);
+                        var dataContext = property.GetValue(viewModel);
+                        contentControl.DataContext = dataContext;
                         contentControl.Content = userControl;
+
+                        // Adds the UserControl's ViewModel to it's owner.
+                        if (dataContext != null) owner.Add(dataContext.GetHashCode());
                     }
                 }
             }
