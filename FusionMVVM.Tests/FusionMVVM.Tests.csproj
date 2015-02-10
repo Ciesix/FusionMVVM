@@ -53,6 +53,7 @@
     <Compile Include="Fakes\IFakeDatabaseService.cs" />
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\EventAggregatorTests.cs" />
     <Compile Include="Service\WindowLocatorBaseTests.cs" />
     <Compile Include="Service\WindowLocatorTests.cs" />
   </ItemGroup>
