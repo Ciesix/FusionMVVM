@@ -37,7 +37,24 @@ namespace FusionMVVM.Service
         /// <param name="target"></param>
         public void Unsubscribe<TMessage>(object target)
         {
-            throw new NotImplementedException();
+            if (target == null) throw new ArgumentNullException("target");
+
+            lock (_lock)
+            {
+                var messageType = typeof(TMessage);
+                List<WeakAction> list;
+
+                if (_subscribers.TryGetValue(messageType, out list))
+                {
+                    var weakActions = list.Where(action => action.Target == target);
+                    foreach (var weakAction in weakActions)
+                    {
+                        weakAction.MarkForDeletion();
+                    }
+
+                    Cleanup();
+                }
+            }
         }
 
         /// <summary>
@@ -48,6 +65,31 @@ namespace FusionMVVM.Service
         public void Publish<TMessage>(TMessage message)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Cleanup all dead WeakActions and removes them from the subscribers.
+        /// </summary>
+        public void Cleanup()
+        {
+            lock (_lock)
+            {
+                foreach (var subscriber in _subscribers.ToList())
+                {
+                    foreach (var weakAction in subscriber.Value.ToList().Where(weakAction => weakAction.IsAlive == false))
+                    {
+                        // Removes the dead WeakAction.
+                        subscriber.Value.Remove(weakAction);
+                    }
+
+                    if (subscriber.Value.Any() == false)
+                    {
+                        // Removes the messageType if no WeakActions are left.
+                        List<WeakAction> list;
+                        _subscribers.TryRemove(subscriber.Key, out list);
+                    }
+                }
+            }
         }
 
         /// <summary>

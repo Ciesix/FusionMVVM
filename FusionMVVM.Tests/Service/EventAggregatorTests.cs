@@ -38,5 +38,24 @@ namespace FusionMVVM.Tests.Service
 
             Assert.Equal(1, actual);
         }
+
+        [Fact]
+        public void UnsubscribeWithoutTarget_ThrowsException()
+        {
+            var sut = new EventAggregator();
+            Assert.Throws<ArgumentNullException>(() => sut.Unsubscribe<string>(null));
+        }
+
+        [Fact]
+        public void UnsubscribeReturnsCorrectResult()
+        {
+            var sut = new EventAggregator();
+            sut.Subscribe<string>(this, s => { });
+            sut.Unsubscribe<string>(this);
+
+            var actual = sut.GetSubscribers<string>().Count;
+
+            Assert.Equal(0, actual);
+        }
     }
 }
