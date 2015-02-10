@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FusionMVVM")]
-[assembly: AssemblyDescription("A small and easy-to-use MVVM toolkit for WPF.")]
+[assembly: AssemblyDescription("FusionMVVM is a toolkit made for WPF, and provides some easy-to-use features for creating MVVM applications, with focus on dependency injection and loosely-coupled design.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Dennis Madsen")]
 [assembly: AssemblyProduct("FusionMVVM")]
