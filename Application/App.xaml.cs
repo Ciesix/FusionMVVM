@@ -17,6 +17,7 @@ namespace Application
             {
                 // Add services to the Ioc container.
                 Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator());
+                Ioc.Current.RegisterAsSingleton<IEventAggregator>(new EventAggregator());
 
                 // Register windows in the WindowLocator service.
                 var windowLocator = Ioc.Current.Resolve<IWindowLocator>();
