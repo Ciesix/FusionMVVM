@@ -1,3 +1,9 @@
+## Next
+
+**Bugfixes**
+
+- [#25] NullReferenceException when showing window from another project. (Thanks to [togocoder][togocoder])
+
 ## 2.0.0-alpha3 (2015-02-03)
 
 **Features**
@@ -25,3 +31,5 @@
 - Ioc container: Call stored instances of classes from anywhere.
 - WindowLocator: Loosely-coupled way to `show` and `close` windows from the ViewModel.
 - RelayCommand: Execute actions/methods in the ViewModel from the View eg. from a `Button`.
+
+[togocoder]: https://github.com/togocoder
