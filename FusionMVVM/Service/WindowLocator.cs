@@ -28,7 +28,7 @@ namespace FusionMVVM.Service
             if (viewModelType == null) throw new ArgumentNullException("viewModelType");
 
             var name = GetBaseName(viewModelType.Name);
-            var assembly = Assembly.GetEntryAssembly();
+            var assembly = viewModelType.Assembly;
 
             // Find View in the entry assembly.
             var viewName = NamespaceHelper.FindNamespace(assembly, name + "View");
