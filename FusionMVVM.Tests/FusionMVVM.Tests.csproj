@@ -33,6 +33,12 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\packages\AutoFixture.3.23.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.Xunit">
+      <HintPath>..\packages\AutoFixture.Xunit.3.23.1\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="xunit">
@@ -49,8 +55,9 @@
     <Compile Include="Fakes\FakeContainerBase.cs" />
     <Compile Include="Fakes\FakeDatabaseService.cs" />
     <Compile Include="Fakes\FakeViewModel.cs" />
-    <Compile Include="Fakes\FakeWindowLocatorBase.cs" />
     <Compile Include="Fakes\IFakeDatabaseService.cs" />
+    <Compile Include="Fakes\FakeWindowLocatorBase.cs" />
+    <Compile Include="Fakes\TestAssembly.cs" />
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\EventAggregatorTests.cs" />
@@ -64,7 +71,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

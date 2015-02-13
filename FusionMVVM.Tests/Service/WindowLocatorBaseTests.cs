@@ -10,27 +10,6 @@ namespace FusionMVVM.Tests.Service
     public class WindowLocatorBaseTests
     {
         [Fact]
-        public void GetBaseName_Null_ThrowsException()
-        {
-            var sut = new FakeWindowLocatorBase();
-            Assert.Throws<ArgumentNullException>(() => sut.GetBaseName(null));
-        }
-
-        [Theory]
-        [InlineData("", "")]
-        [InlineData(" ", "")]
-        [InlineData("  ", "")]
-        [InlineData("WrongName", "")]
-        [InlineData("MainViewModel", "Main")]
-        [InlineData("MainViewModelViewModel", "Main")]
-        public void GetBaseName_ReturnCorrectResult(string viewModel, string expected)
-        {
-            var sut = new FakeWindowLocatorBase();
-            var actual = sut.GetBaseName(viewModel);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void GetViewModelTypes_Null_ThrowsException()
         {
             var sut = new FakeWindowLocatorBase();

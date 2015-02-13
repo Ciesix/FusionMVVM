@@ -29,12 +29,8 @@ namespace FusionMVVM.Service
 
             var name = GetBaseName(viewModelType.Name);
             var assembly = viewModelType.Assembly;
-
-            // Find View in the entry assembly.
-            var viewName = NamespaceHelper.FindNamespace(assembly, name + "View");
-
-            // Convert the View name to a type.
-            var viewType = Type.GetType(viewName + ", " + assembly.FullName);
+            var viewName = FindNamespaceInAssembly(assembly, name + "View");
+            var viewType = ConvertNameToType(viewName, assembly);
 
             if (viewType != null && (viewType.BaseType == typeof(Window) || viewType.BaseType == typeof(UserControl)))
             {
@@ -43,7 +39,7 @@ namespace FusionMVVM.Service
         }
 
         /// <summary>
-        /// Registers all windows with a matching ViewModel name in the entry assembly.
+        /// Registers all windows with a matching ViewModel name in the entry types.
         /// </summary>
         public void RegisterAll()
         {
@@ -51,7 +47,7 @@ namespace FusionMVVM.Service
         }
 
         /// <summary>
-        /// Registers all windows with a matching ViewModel name in the entry assembly.
+        /// Registers all windows with a matching ViewModel name in the entry types.
         /// If includeReferencedAssemblies is true, all referenced assemblies are also searched.
         /// </summary>
         /// <param name="includeReferencedAssemblies"></param>
@@ -139,6 +135,82 @@ namespace FusionMVVM.Service
                 // Close the window.
                 window.Close();
             }
+        }
+
+        /// <summary>
+        /// Gets the base name of the ViewModel. Will return 'Foo' if the
+        /// ViewModel value is 'FooViewModel'.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
+        public string GetBaseName(string viewModel)
+        {
+            if (viewModel == null) throw new ArgumentNullException("viewModel");
+
+            var name = string.Empty;
+            var index = viewModel.IndexOf("ViewModel", StringComparison.OrdinalIgnoreCase);
+
+            if (index != -1)
+            {
+                name = viewModel.Substring(0, index);
+            }
+
+            return name;
+        }
+
+        /// <summary>
+        /// Gets a distinct list of types.
+        /// </summary>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        public IEnumerable<string> GetDistinctTypes(IEnumerable<Type> types)
+        {
+            if (types == null) throw new ArgumentNullException("types");
+            return types.Select(t => t.FullName).Distinct();
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public string FindNamespaceInAssembly(Assembly assembly, string target)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+            if (target == null) throw new ArgumentNullException("target");
+
+            if (target.Trim() == string.Empty) return string.Empty;
+
+            var namespaces = GetDistinctTypes(assembly.GetTypes()).ToList();
+            var foundNamespaces = namespaces.FindAll(ns => ns.Contains(target));
+            var shortestDistance = int.MaxValue;
+            var result = string.Empty;
+
+            foreach (var item in foundNamespaces)
+            {
+                var distance = Levenshtein.MeasureDistance(item, target);
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    result = item;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts a type name to a type within the assembly.
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        public Type ConvertNameToType(string typeName, Assembly assembly)
+        {
+            if (typeName == null) throw new ArgumentNullException("typeName");
+            if (assembly == null) throw new ArgumentNullException("assembly");
+
+            return Type.GetType(typeName + ", " + assembly.FullName);
         }
     }
 }

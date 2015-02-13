@@ -15,30 +15,6 @@ namespace FusionMVVM.Service
         protected readonly ConcurrentDictionary<int, List<int>> UserControlOwners = new ConcurrentDictionary<int, List<int>>();
 
         /// <summary>
-        /// Gets the base name of the ViewModel name.
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
-        protected virtual string GetBaseName(string viewModel)
-        {
-            if (viewModel == null) throw new ArgumentNullException("viewModel");
-
-            // Trim spaces.
-            viewModel = viewModel.Trim();
-
-            // Find the index of 'ViewModel'.
-            var index = viewModel.IndexOf("ViewModel", StringComparison.Ordinal);
-            if (index != -1)
-            {
-                // Trim 'ViewModel' from the name.
-                var name = viewModel.Substring(0, index);
-                return name;
-            }
-
-            return string.Empty;
-        }
-
-        /// <summary>
         /// Creates a window with or without an owner.
         /// </summary>
         /// <param name="viewModel"></param>

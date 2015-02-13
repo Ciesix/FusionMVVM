@@ -56,7 +56,6 @@
     <Compile Include="Command\RelayCommandBase.cs" />
     <Compile Include="Common\Activator.cs" />
     <Compile Include="Common\Levenshtein.cs" />
-    <Compile Include="Common\NamespaceHelper.cs" />
     <Compile Include="Common\PropertyChangedObject.cs" />
     <Compile Include="Common\PropertyChangedObjectExtensions.cs" />
     <Compile Include="Common\TypeAndName.cs" />
