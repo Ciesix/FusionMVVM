@@ -10,6 +10,18 @@ namespace FusionMVVM.Service
 {
     public class WindowLocator : WindowLocatorBase, IWindowLocator
     {
+        private readonly Assembly _assembly;
+
+        /// <summary>
+        /// Initializes a new instance of the WindowLocator class.
+        /// </summary>
+        /// <param name="assembly"></param>
+        public WindowLocator(Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+            _assembly = assembly;
+        }
+
         /// <summary>
         /// Registers a window using the ViewModel type as it's source.
         /// </summary>
@@ -54,12 +66,11 @@ namespace FusionMVVM.Service
         /// <param name="includeReferencedAssemblies"></param>
         public void RegisterAll(bool includeReferencedAssemblies)
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
-            var assemblies = new List<Assembly> { entryAssembly };
+            var assemblies = new List<Assembly> { _assembly };
 
             if (includeReferencedAssemblies)
             {
-                var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
+                var referencedAssemblies = _assembly.GetReferencedAssemblies();
                 assemblies.AddRange(referencedAssemblies.Select(Assembly.Load));
             }
 
