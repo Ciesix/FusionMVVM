@@ -67,12 +67,10 @@
     <Compile Include="Fakes\FakeViewModel.cs" />
     <Compile Include="Fakes\FakeWindow.cs" />
     <Compile Include="Fakes\IFakeDatabaseService.cs" />
-    <Compile Include="Fakes\FakeWindowLocatorBase.cs" />
     <Compile Include="Fakes\TestAssembly.cs" />
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\EventAggregatorTests.cs" />
-    <Compile Include="Service\WindowLocatorBaseTests.cs" />
     <Compile Include="Service\WindowLocatorTests\ConstructorTests.cs" />
     <Compile Include="Service\WindowLocatorTests\ConvertNameToTypeTests.cs" />
     <Compile Include="Service\WindowLocatorTests\FindNamespaceInAssemblyTests.cs" />

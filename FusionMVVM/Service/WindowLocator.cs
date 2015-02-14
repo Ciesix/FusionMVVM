@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,8 +9,12 @@ using FusionMVVM.Common;
 
 namespace FusionMVVM.Service
 {
-    public class WindowLocator : WindowLocatorBase, IWindowLocator
+    public class WindowLocator : IWindowLocator
     {
+        private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
+        private readonly ConcurrentDictionary<int, Window> _openedWindows = new ConcurrentDictionary<int, Window>();
+        private readonly ConcurrentDictionary<int, List<int>> _userControlOwners = new ConcurrentDictionary<int, List<int>>();
+
         private readonly Assembly _assembly;
 
         /// <summary>
@@ -47,7 +52,7 @@ namespace FusionMVVM.Service
 
             if (viewType != null && isTypeValid)
             {
-                RegisteredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
+                _registeredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
             }
         }
 
@@ -101,7 +106,7 @@ namespace FusionMVVM.Service
         public void ShowWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
             var window = CreateWindow(viewModel, owner);
-            if (OpenedWindows.TryAdd(viewModel.GetHashCode(), window))
+            if (_openedWindows.TryAdd(viewModel.GetHashCode(), window))
             {
                 window.Show();
             }
@@ -125,7 +130,7 @@ namespace FusionMVVM.Service
         public void ShowDialogWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
             var window = CreateWindow(viewModel, owner);
-            if (OpenedWindows.TryAdd(viewModel.GetHashCode(), window))
+            if (_openedWindows.TryAdd(viewModel.GetHashCode(), window))
             {
                 window.ShowDialog();
             }
@@ -139,14 +144,129 @@ namespace FusionMVVM.Service
         {
             Window window;
 
-            var owner = UserControlOwners.FirstOrDefault(pair => pair.Value.Contains(viewModel.GetHashCode()));
+            var owner = _userControlOwners.FirstOrDefault(pair => pair.Value.Contains(viewModel.GetHashCode()));
             var hashCode = owner.Key != 0 ? owner.Key : viewModel.GetHashCode();
 
-            if (OpenedWindows.TryGetValue(hashCode, out window))
+            if (_openedWindows.TryGetValue(hashCode, out window))
             {
                 // Close the window.
                 window.Close();
             }
+        }
+
+        /// <summary>
+        /// Creates a window with or without an owner.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public Window CreateWindow(ViewModelBase viewModel, ViewModelBase owner)
+        {
+            var viewModelType = viewModel.GetType();
+            Window window = null;
+            Type viewType;
+
+            if (_registeredTypes.TryGetValue(viewModelType, out viewType))
+            {
+                // Create the window.
+                var constructor = viewType.GetConstructors().First();
+                var activator = Common.Activator.GetActivator(constructor);
+
+                window = (Window)activator();
+                window.DataContext = viewModel;
+                window.Closed += Window_OnClosed;
+
+                Window ownerWindow;
+                if (owner != null && _openedWindows.TryGetValue(owner.GetHashCode(), out ownerWindow))
+                {
+                    // Set the window owner to the ownerWindow.
+                    window.Owner = ownerWindow;
+                }
+
+                AutoloadUserControls(window);
+            }
+
+            return window;
+        }
+
+        /// <summary>
+        /// Automatically load UserControls with matching names.
+        /// </summary>
+        /// <param name="window"></param>
+        public void AutoloadUserControls(Window window)
+        {
+            if (window == null) throw new ArgumentNullException("window");
+
+            // Finds all ContentControls in the window, that has a name.
+            var contentControls = window.FindLogicalChildren<ContentControl>().Where(control => string.IsNullOrWhiteSpace(control.Name) == false);
+
+            foreach (var contentControl in contentControls)
+            {
+                var propertyName = contentControl.Name;
+                var viewModel = contentControl.DataContext as ViewModelBase;
+
+                if (viewModel != null)
+                {
+                    Type viewType;
+
+                    // Gets a collection of the owners UserControl's.
+                    var owner = _userControlOwners.GetOrAdd(viewModel.GetHashCode(), k => new List<int>());
+
+                    // Find the property with the same name as the ContentControl.
+                    var property = viewModel.GetType().GetProperties().FirstOrDefault(propertyInfo => propertyInfo.Name == propertyName);
+
+                    if (property != null && _registeredTypes.TryGetValue(property.PropertyType, out viewType))
+                    {
+                        // Create the UserControl object.
+                        var constructor = viewType.GetConstructors().First();
+                        var activator = Common.Activator.GetActivator(constructor);
+                        var userControl = (UserControl)activator();
+
+                        // Attach the child ViewModel and View.
+                        var dataContext = property.GetValue(viewModel);
+                        contentControl.DataContext = dataContext;
+                        contentControl.Content = userControl;
+
+                        // Adds the UserControl's ViewModel to it's owner.
+                        if (dataContext != null) owner.Add(dataContext.GetHashCode());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cleanup after the window has been closed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void Window_OnClosed(object sender, EventArgs e)
+        {
+            var window = sender as Window;
+            if (window == null) return;
+
+            window.Closed -= Window_OnClosed;
+
+            var viewModel = window.DataContext;
+            if (viewModel == null) return;
+
+            Window closedWindow;
+            _openedWindows.TryRemove(viewModel.GetHashCode(), out closedWindow);
+        }
+
+        /// <summary>
+        /// Returns a collection of ViewModel types from given assembly types.
+        /// </summary>
+        /// <param name="assemblyTypes"></param>
+        /// <returns></returns>
+        public IEnumerable<Type> GetViewModelTypes(IEnumerable<Type> assemblyTypes)
+        {
+            if (assemblyTypes == null) throw new ArgumentNullException("assemblyTypes");
+
+            var result = from type in assemblyTypes
+                         where type.FullName != null && (type.IsClass && type.FullName.EndsWith("ViewModel", StringComparison.OrdinalIgnoreCase))
+                         select type;
+
+            return result;
         }
 
         /// <summary>
