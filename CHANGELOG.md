@@ -3,6 +3,7 @@
 **Bugfixes**
 
 - [#25] NullReferenceException when showing window from another project. (Thanks to [togocoder][togocoder])
+- [#27] Views inherited from Window or UserControl not registered in WindowLocator.
 
 ## 2.0.0-alpha3 (2015-02-03)
 
