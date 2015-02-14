@@ -31,8 +31,9 @@ namespace FusionMVVM.Service
             var assembly = viewModelType.Assembly;
             var viewName = FindNamespaceInAssembly(assembly, name + "View");
             var viewType = ConvertNameToType(viewName, assembly);
+            var isTypeValid = VerifyValidBaseType(viewType, new List<Type> { typeof(Window), typeof(UserControl) });
 
-            if (viewType != null && (viewType.BaseType == typeof(Window) || viewType.BaseType == typeof(UserControl)))
+            if (viewType != null && isTypeValid)
             {
                 RegisteredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
             }
@@ -211,6 +212,25 @@ namespace FusionMVVM.Service
             if (assembly == null) throw new ArgumentNullException("assembly");
 
             return Type.GetType(typeName + ", " + assembly.FullName);
+        }
+
+        /// <summary>
+        /// Verifies whether the base type is a part of the valid types.
+        /// </summary>
+        /// <param name="currentType"></param>
+        /// <param name="validTypes"></param>
+        /// <returns></returns>
+        public bool VerifyValidBaseType(Type currentType, IEnumerable<Type> validTypes)
+        {
+            if (currentType == null) throw new ArgumentNullException("currentType");
+            if (validTypes == null) throw new ArgumentNullException("validTypes");
+
+            var baseType = currentType.BaseType;
+            var copyValidTypes = validTypes as IList<Type> ?? validTypes.ToList();
+            var isValid = copyValidTypes.Any(t => t == baseType);
+
+            if (baseType == null || baseType == typeof(UIElement)) return false;
+            return isValid || VerifyValidBaseType(baseType, copyValidTypes);
         }
     }
 }

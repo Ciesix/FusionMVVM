@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
 using FusionMVVM.Service;
 using FusionMVVM.Tests.Fakes;
 using Ploeh.AutoFixture;
@@ -101,6 +103,31 @@ namespace FusionMVVM.Tests.Service
         public void ConvertNameToType_ReturnsCorrectResult(string typeName, Type expected, WindowLocator sut, Assembly assembly)
         {
             var actual = sut.ConvertNameToType(typeName, assembly);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory, AutoData]
+        public void VerifyValidBaseType_WhenCurrentType_IsNull(WindowLocator sut, IEnumerable<Type> validTypes)
+        {
+            Assert.Throws<ArgumentNullException>(() => sut.VerifyValidBaseType(null, validTypes));
+        }
+
+        [Theory, AutoData]
+        public void VerifyValidBaseType_WhenValidTypes_IsNull(WindowLocator sut, Type type)
+        {
+            Assert.Throws<ArgumentNullException>(() => sut.VerifyValidBaseType(type, null));
+        }
+
+        [Theory]
+        [InlineAutoData(typeof(FakeWindow), true)]
+        [InlineAutoData(typeof(FakeCustomWindow), true)]
+        [InlineAutoData(typeof(FakeUserControl), true)]
+        [InlineAutoData(typeof(FrameworkElement), false)]
+        [InlineAutoData(typeof(object), false)]
+        public void VerifyValidBaseType_ReturnsCorrectResult(Type currentType, bool expected, WindowLocator sut)
+        {
+            var validTypes = new List<Type> { typeof(Window), typeof(UserControl) };
+            var actual = sut.VerifyValidBaseType(currentType, validTypes);
             Assert.Equal(expected, actual);
         }
     }
