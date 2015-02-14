@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DependencyObjectExtensions.cs" />
+    <Compile Include="Common\EndsWithTypeFilter.cs" />
+    <Compile Include="Common\ITypeFilter.cs" />
     <Compile Include="Common\WeakAction.cs" />
     <Compile Include="Common\WeakActionGeneric.cs" />
     <Compile Include="ContainerBase.cs" />

@@ -81,8 +81,9 @@ namespace FusionMVVM.Service
 
             foreach (var assembly in assemblies)
             {
-                foreach (var viewModelType in GetViewModelTypes(assembly.GetTypes()))
+                foreach (var viewModelName in GetDistinctTypes(assembly.GetTypes(), new EndsWithTypeFilter("ViewModel", false)))
                 {
+                    var viewModelType = ConvertNameToType(viewModelName, assembly);
                     Register(viewModelType);
                 }
             }
@@ -254,22 +255,6 @@ namespace FusionMVVM.Service
         }
 
         /// <summary>
-        /// Returns a collection of ViewModel types from given assembly types.
-        /// </summary>
-        /// <param name="assemblyTypes"></param>
-        /// <returns></returns>
-        public IEnumerable<Type> GetViewModelTypes(IEnumerable<Type> assemblyTypes)
-        {
-            if (assemblyTypes == null) throw new ArgumentNullException("assemblyTypes");
-
-            var result = from type in assemblyTypes
-                         where type.FullName != null && (type.IsClass && type.FullName.EndsWith("ViewModel", StringComparison.OrdinalIgnoreCase))
-                         select type;
-
-            return result;
-        }
-
-        /// <summary>
         /// Gets the base name of the ViewModel. Will return 'Foo' if the
         /// ViewModel value is 'FooViewModel'.
         /// </summary>
@@ -294,11 +279,16 @@ namespace FusionMVVM.Service
         /// Gets a distinct list of types.
         /// </summary>
         /// <param name="types"></param>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        public IEnumerable<string> GetDistinctTypes(IEnumerable<Type> types)
+        public IEnumerable<string> GetDistinctTypes(IEnumerable<Type> types, ITypeFilter filter = null)
         {
             if (types == null) throw new ArgumentNullException("types");
-            return types.Select(t => t.FullName).Distinct();
+
+            var distinctTypes = types.Distinct();
+            if (filter != null) distinctTypes = filter.ApplyFilter(distinctTypes);
+
+            return distinctTypes.Select(t => t.FullName);
         }
 
         /// <summary>
