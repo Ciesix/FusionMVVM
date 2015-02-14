@@ -1,5 +1,9 @@
 ## Next
 
+**Features**
+
+- Minor changes, more tests and some refactoring.
+
 **Bugfixes**
 
 - [#25] NullReferenceException when showing window from another project. (Thanks to [togocoder][togocoder])
