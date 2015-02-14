@@ -73,7 +73,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\EventAggregatorTests.cs" />
     <Compile Include="Service\WindowLocatorBaseTests.cs" />
-    <Compile Include="Service\WindowLocatorTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\ConstructorTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\ConvertNameToTypeTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\FindNamespaceInAssemblyTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\GetBaseNameTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\GetDistinctTypesTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\RegisterTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\VerifyValidBaseTypeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FusionMVVM\FusionMVVM.csproj">
