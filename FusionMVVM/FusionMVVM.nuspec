@@ -12,12 +12,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Features
-- [#19] WindowLocatorBase.GetBaseName tests.
-- [#21] Autoload UserControls in Window.
-- [#20] Automatically bind a UserControl to the parent Window.
+- Minor changes, more tests and some refactoring.
 
 Bugfixes
-- [#18] ReSharper Annotations attributes are erased from metadata by default.
+- [#25] NullReferenceException when showing window from another project. (Thanks to togocoder)
+- [#27] Views inherited from Window or UserControl not registered in WindowLocator.
     </releaseNotes>
     <copyright>Copyright © 2015 Dennis Madsen. All rights reserved.</copyright>
     <tags>C# WPF MVVM Toolkit Library</tags>
