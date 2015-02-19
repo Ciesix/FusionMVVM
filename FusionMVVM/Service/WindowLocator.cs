@@ -52,8 +52,31 @@ namespace FusionMVVM.Service
 
             if (viewType != null && isTypeValid)
             {
-                _registeredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
+                Register(viewModelType, viewType);
             }
+        }
+
+        /// <summary>
+        /// Registers the ViewModel and View types as a pair.
+        /// </summary>
+        /// <typeparam name="TViewModel"></typeparam>
+        /// <typeparam name="TView"></typeparam>
+        public void Register<TViewModel, TView>()
+        {
+            Register(typeof(TViewModel), typeof(TView));
+        }
+
+        /// <summary>
+        /// Registers the ViewModel and View types as a pair.
+        /// </summary>
+        /// <param name="viewModelType"></param>
+        /// <param name="viewType"></param>
+        public void Register(Type viewModelType, Type viewType)
+        {
+            if (viewModelType == null) throw new ArgumentNullException("viewModelType");
+            if (viewType == null) throw new ArgumentNullException("viewType");
+
+            _registeredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
         }
 
         /// <summary>

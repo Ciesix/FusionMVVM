@@ -13,5 +13,17 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
         {
             Assert.Throws<ArgumentNullException>(() => sut.Register(null));
         }
+
+        [Theory, AutoData]
+        public void RegisterManuel_WhenViewModelType_IsNull(WindowLocator sut, Type viewType)
+        {
+            Assert.Throws<ArgumentNullException>(() => sut.Register(null, viewType));
+        }
+
+        [Theory, AutoData]
+        public void RegisterManuel_WhenModelType_IsNull(WindowLocator sut, Type viewModelType)
+        {
+            Assert.Throws<ArgumentNullException>(() => sut.Register(viewModelType, null));
+        }
     }
 }

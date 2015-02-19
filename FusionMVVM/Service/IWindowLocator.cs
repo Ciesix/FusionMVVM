@@ -17,6 +17,20 @@ namespace FusionMVVM.Service
         void Register(Type viewModelType);
 
         /// <summary>
+        /// Registers the ViewModel and View types as a pair.
+        /// </summary>
+        /// <typeparam name="TViewModel"></typeparam>
+        /// <typeparam name="TView"></typeparam>
+        void Register<TViewModel, TView>();
+
+        /// <summary>
+        /// Registers the ViewModel and View types as a pair.
+        /// </summary>
+        /// <param name="viewModelType"></param>
+        /// <param name="viewType"></param>
+        void Register(Type viewModelType, Type viewType);
+
+        /// <summary>
         /// Registers all windows with a matching ViewModel name in the entry assembly.
         /// </summary>
         void RegisterAll();
