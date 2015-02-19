@@ -1,3 +1,9 @@
+## Next
+
+**Features**
+
+- [#28] Register ViewModel and View types directly in WindowLocator.
+
 ## 2.0.0-alpha4 (2015-02-14)
 
 **Features**
