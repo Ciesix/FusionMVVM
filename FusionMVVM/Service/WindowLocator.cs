@@ -191,33 +191,25 @@ namespace FusionMVVM.Service
         /// <returns></returns>
         public Window CreateWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
-            //var viewModelType = viewModel.GetType();
-            //Window window = null;
-            //Type viewType;
+            var viewModelType = viewModel.GetType();
+            Window window = null;
 
-            //if (_registeredTypes.TryGetValue(viewModelType, out viewType))
-            //{
-            //    // Create the window.
-            //    var constructor = viewType.GetConstructors().First();
-            //    var activator = Common.Activator.GetActivator(constructor);
+            Type viewType;
+            if (_registeredTypes.TryGetValue(viewModelType, out viewType))
+            {
+                Window ownerWindow = null;
+                if (owner != null)
+                {
+                    _openedWindows.TryGetValue(owner.GetHashCode(), out ownerWindow);
+                }
 
-            //    window = (Window)activator();
-            //    window.DataContext = viewModel;
-            //    window.Closed += Window_OnClosed;
+                window = _windowInitiator.Initialize(viewType, viewModel, ownerWindow);
+                window.Closed += Window_OnClosed;
 
-            //    Window ownerWindow;
-            //    if (owner != null && _openedWindows.TryGetValue(owner.GetHashCode(), out ownerWindow))
-            //    {
-            //        // Set the window owner to the ownerWindow.
-            //        window.Owner = ownerWindow;
-            //    }
+                AutoloadUserControls(window);
+            }
 
-            //    AutoloadUserControls(window);
-            //}
-
-            //return window;
-
-            throw new NotImplementedException();
+            return window;
         }
 
         /// <summary>

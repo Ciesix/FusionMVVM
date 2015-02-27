@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 
 namespace FusionMVVM.Common
@@ -15,7 +16,16 @@ namespace FusionMVVM.Common
         /// <returns></returns>
         public Window Initialize(Type windowType, object dataContext, Window ownerWindow)
         {
-            throw new NotImplementedException();
+            if (windowType == null) throw new ArgumentNullException("windowType");
+
+            var constructor = windowType.GetConstructors().First();
+            var activator = Activator.GetActivator(constructor);
+            var window = (Window)activator();
+
+            if (dataContext != null) window.DataContext = dataContext;
+            if (ownerWindow != null) window.Owner = ownerWindow;
+
+            return window;
         }
     }
 }
