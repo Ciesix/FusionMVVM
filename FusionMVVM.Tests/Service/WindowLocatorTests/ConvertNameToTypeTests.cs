@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using FusionMVVM.Service;
 using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.Xunit;
 using Xunit;
 using Xunit.Extensions;
 

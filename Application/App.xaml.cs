@@ -18,7 +18,7 @@ namespace Application
             try
             {
                 var assembly = Assembly.GetEntryAssembly();
-                IWindowInitiator windowInitiator = null;
+                IWindowInitiator windowInitiator = new WindowInitiator();
 
                 // Add services to the Ioc container.
                 Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(assembly, windowInitiator));
