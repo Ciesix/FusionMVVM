@@ -80,6 +80,7 @@
     <Compile Include="Service\EventAggregatorTests.cs" />
     <Compile Include="Service\WindowLocatorTests\ConstructorTests.cs" />
     <Compile Include="Service\WindowLocatorTests\ConvertNameToTypeTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\CreateWindowTests.cs" />
     <Compile Include="Service\WindowLocatorTests\FindNamespaceInAssemblyTests.cs" />
     <Compile Include="Service\WindowLocatorTests\GetBaseNameTests.cs" />
     <Compile Include="Service\WindowLocatorTests\GetDistinctTypesTests.cs" />

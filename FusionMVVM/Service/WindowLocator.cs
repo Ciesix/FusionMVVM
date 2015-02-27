@@ -191,6 +191,8 @@ namespace FusionMVVM.Service
         /// <returns></returns>
         public Window CreateWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
+            if (viewModel == null) throw new ArgumentNullException("viewModel");
+
             var viewModelType = viewModel.GetType();
             Window window = null;
 
