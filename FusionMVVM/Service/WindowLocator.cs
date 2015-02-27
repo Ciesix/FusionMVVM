@@ -16,15 +16,20 @@ namespace FusionMVVM.Service
         private readonly ConcurrentDictionary<int, List<int>> _userControlOwners = new ConcurrentDictionary<int, List<int>>();
 
         private readonly Assembly _assembly;
+        private readonly IWindowInitiator _windowInitiator;
 
         /// <summary>
         /// Initializes a new instance of the WindowLocator class.
         /// </summary>
         /// <param name="assembly"></param>
-        public WindowLocator(Assembly assembly)
+        /// <param name="windowInitiator"></param>
+        public WindowLocator(Assembly assembly, IWindowInitiator windowInitiator)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
+            if (windowInitiator == null) throw new ArgumentNullException("windowInitiator");
+
             _assembly = assembly;
+            _windowInitiator = windowInitiator;
         }
 
         /// <summary>
@@ -186,31 +191,33 @@ namespace FusionMVVM.Service
         /// <returns></returns>
         public Window CreateWindow(ViewModelBase viewModel, ViewModelBase owner)
         {
-            var viewModelType = viewModel.GetType();
-            Window window = null;
-            Type viewType;
+            //var viewModelType = viewModel.GetType();
+            //Window window = null;
+            //Type viewType;
 
-            if (_registeredTypes.TryGetValue(viewModelType, out viewType))
-            {
-                // Create the window.
-                var constructor = viewType.GetConstructors().First();
-                var activator = Common.Activator.GetActivator(constructor);
+            //if (_registeredTypes.TryGetValue(viewModelType, out viewType))
+            //{
+            //    // Create the window.
+            //    var constructor = viewType.GetConstructors().First();
+            //    var activator = Common.Activator.GetActivator(constructor);
 
-                window = (Window)activator();
-                window.DataContext = viewModel;
-                window.Closed += Window_OnClosed;
+            //    window = (Window)activator();
+            //    window.DataContext = viewModel;
+            //    window.Closed += Window_OnClosed;
 
-                Window ownerWindow;
-                if (owner != null && _openedWindows.TryGetValue(owner.GetHashCode(), out ownerWindow))
-                {
-                    // Set the window owner to the ownerWindow.
-                    window.Owner = ownerWindow;
-                }
+            //    Window ownerWindow;
+            //    if (owner != null && _openedWindows.TryGetValue(owner.GetHashCode(), out ownerWindow))
+            //    {
+            //        // Set the window owner to the ownerWindow.
+            //        window.Owner = ownerWindow;
+            //    }
 
-                AutoloadUserControls(window);
-            }
+            //    AutoloadUserControls(window);
+            //}
 
-            return window;
+            //return window;
+
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -8,17 +8,17 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
 {
     public class GetBaseNameTests
     {
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void GetBaseName_WhenViewModel_IsNull(WindowLocator sut)
         {
             Assert.Throws<ArgumentNullException>(() => sut.GetBaseName(null));
         }
 
         [Theory]
-        [InlineAutoData("", "")]
-        [InlineAutoData("DefaultViewModel", "Default")]
-        [InlineAutoData("lowercaseviewmodel", "lowercase")]
-        [InlineAutoData("DoubleViewModelViewModel", "Double")]
+        [CustomInlineAutoData("", "")]
+        [CustomInlineAutoData("DefaultViewModel", "Default")]
+        [CustomInlineAutoData("lowercaseviewmodel", "lowercase")]
+        [CustomInlineAutoData("DoubleViewModelViewModel", "Double")]
         public void GetBaseName_ReturnsCorrectResult(string viewModel, string expected, WindowLocator sut)
         {
             var actual = sut.GetBaseName(viewModel);

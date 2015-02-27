@@ -61,7 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\TypeAndNameTests.cs" />
+    <Compile Include="Common\WindowInitiatorTests\InitializeTests.cs" />
     <Compile Include="ContainerBaseTests.cs" />
+    <Compile Include="CustomAutoDataAttribute.cs" />
     <Compile Include="DefaultIocTests.cs" />
     <Compile Include="Fakes\FakeContainerBase.cs" />
     <Compile Include="Fakes\FakeCustomWindow.cs" />
@@ -71,6 +73,8 @@
     <Compile Include="Fakes\FakeWindow.cs" />
     <Compile Include="Fakes\IFakeDatabaseService.cs" />
     <Compile Include="Fakes\TestAssembly.cs" />
+    <Compile Include="CustomInlineAutoDataAttribute.cs" />
+    <Compile Include="InterfaceMappingCustomize.cs" />
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\EventAggregatorTests.cs" />

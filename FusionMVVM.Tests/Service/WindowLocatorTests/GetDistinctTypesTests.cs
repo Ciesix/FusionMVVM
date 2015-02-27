@@ -13,13 +13,13 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
 {
     public class GetDistinctTypesTests
     {
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void GetDistinctTypes_WhenTypes_IsNull(WindowLocator sut)
         {
             Assert.Throws<ArgumentNullException>(() => sut.GetDistinctTypes(null));
         }
 
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void GetDistinctTypes_WhenTypesAreEmpty_ReturnEmpty(WindowLocator sut)
         {
             var types = new List<Type>();
@@ -27,7 +27,7 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
             Assert.Equal(0, actual.Count);
         }
 
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void GetDistinctTypes_WhenResult_NotEmpty(WindowLocator sut)
         {
             var fixture = new Fixture();
@@ -42,7 +42,7 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
         [PropertyData("EndsWithTypeFilterData")]
         public void GetDistinctTypes_WhenFiltered_ReturnsCorrectResult(ITypeFilter filter, int expected)
         {
-            var fixture = new Fixture();
+            var fixture = new CustomAutoDataAttribute().Fixture;
             var sut = fixture.Create<WindowLocator>();
             var types = new List<Type> { typeof(string), typeof(FakeWindow), typeof(object), typeof(FakeCustomWindow) };
 
@@ -65,7 +65,7 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
             }
         }
 
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void GetDistinctTypes_WhenFilterText_IsNull(WindowLocator sut)
         {
             var fixture = new Fixture();

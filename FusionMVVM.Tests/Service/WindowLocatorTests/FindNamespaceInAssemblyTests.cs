@@ -10,22 +10,22 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
 {
     public class FindNamespaceInAssemblyTests
     {
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void FindNamespaceInAssembly_WhenAssembly_IsNull(WindowLocator sut, string name)
         {
             Assert.Throws<ArgumentNullException>(() => sut.FindNamespaceInAssembly(null, name));
         }
 
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void FindNamespaceInAssembly_WhenName_IsNull(WindowLocator sut, Assembly assembly)
         {
             Assert.Throws<ArgumentNullException>(() => sut.FindNamespaceInAssembly(assembly, null));
         }
 
         [Theory]
-        [InlineAutoData("", "")]
-        [InlineAutoData(" ", "")]
-        [InlineAutoData("String", "System.String")]
+        [CustomInlineAutoData("", "")]
+        [CustomInlineAutoData(" ", "")]
+        [CustomInlineAutoData("String", "System.String")]
         public void FindNamespaceInAssembly_ReturnsCorrectResult(string target, string expected, WindowLocator sut, TestAssembly assembly)
         {
             var actual = sut.FindNamespaceInAssembly(assembly, target);

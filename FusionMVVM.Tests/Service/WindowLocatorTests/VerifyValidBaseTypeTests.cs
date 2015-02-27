@@ -12,24 +12,24 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
 {
     public class VerifyValidBaseTypeTests
     {
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void VerifyValidBaseType_WhenCurrentType_IsNull(WindowLocator sut, IEnumerable<Type> validTypes)
         {
             Assert.Throws<ArgumentNullException>(() => sut.VerifyValidBaseType(null, validTypes));
         }
 
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void VerifyValidBaseType_WhenValidTypes_IsNull(WindowLocator sut, Type type)
         {
             Assert.Throws<ArgumentNullException>(() => sut.VerifyValidBaseType(type, null));
         }
 
         [Theory]
-        [InlineAutoData(typeof(FakeWindow), true)]
-        [InlineAutoData(typeof(FakeCustomWindow), true)]
-        [InlineAutoData(typeof(FakeUserControl), true)]
-        [InlineAutoData(typeof(FrameworkElement), false)]
-        [InlineAutoData(typeof(object), false)]
+        [CustomInlineAutoData(typeof(FakeWindow), true)]
+        [CustomInlineAutoData(typeof(FakeCustomWindow), true)]
+        [CustomInlineAutoData(typeof(FakeUserControl), true)]
+        [CustomInlineAutoData(typeof(FrameworkElement), false)]
+        [CustomInlineAutoData(typeof(object), false)]
         public void VerifyValidBaseType_ReturnsCorrectResult(Type currentType, bool expected, WindowLocator sut)
         {
             var validTypes = new List<Type> { typeof(Window), typeof(UserControl) };

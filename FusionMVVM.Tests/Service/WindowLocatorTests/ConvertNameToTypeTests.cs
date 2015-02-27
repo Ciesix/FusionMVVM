@@ -10,21 +10,21 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
 {
     public class ConvertNameToTypeTests
     {
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void ConvertNameToType_WhenTypeName_IsNull(WindowLocator sut, Assembly assembly)
         {
             Assert.Throws<ArgumentNullException>(() => sut.ConvertNameToType(null, assembly));
         }
 
-        [Theory, AutoData]
+        [Theory, CustomAutoData]
         public void ConvertNameToType_WhenAssembly_IsNull(WindowLocator sut, string typeName)
         {
             Assert.Throws<ArgumentNullException>(() => sut.ConvertNameToType(typeName, null));
         }
 
         [Theory]
-        [InlineAutoData("", null)]
-        [InlineAutoData("Ploeh.AutoFixture.Fixture", typeof(Fixture))]
+        [CustomInlineAutoData("", null)]
+        [CustomInlineAutoData("Ploeh.AutoFixture.Fixture", typeof(Fixture))]
         public void ConvertNameToType_ReturnsCorrectResult(string typeName, Type expected, WindowLocator sut, Assembly assembly)
         {
             var actual = sut.ConvertNameToType(typeName, assembly);

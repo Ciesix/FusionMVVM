@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Application.ViewModel;
 using FusionMVVM;
+using FusionMVVM.Common;
 using FusionMVVM.Service;
 
 namespace Application
@@ -16,8 +17,11 @@ namespace Application
         {
             try
             {
+                var assembly = Assembly.GetEntryAssembly();
+                IWindowInitiator windowInitiator = null;
+
                 // Add services to the Ioc container.
-                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(Assembly.GetEntryAssembly()));
+                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(assembly, windowInitiator));
                 //Ioc.Current.RegisterAsSingleton<IEventAggregator>(new EventAggregator());
 
                 // Register windows in the WindowLocator service.
