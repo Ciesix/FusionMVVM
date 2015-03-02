@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Common\DependencyObjectExtensions.cs" />
     <Compile Include="Common\EndsWithTypeFilter.cs" />
+    <Compile Include="Common\IMetric.cs" />
     <Compile Include="Common\ITypeFilter.cs" />
     <Compile Include="Common\IWindowInitiator.cs" />
     <Compile Include="Common\WeakAction.cs" />

@@ -2,17 +2,21 @@
 
 namespace FusionMVVM.Common
 {
-    public class Levenshtein
+    public class Levenshtein : IMetric
     {
         /// <summary>
-        /// Measuring the difference between the source and target string using
-        /// Levenshtein distance algorithme.
+        /// Measures the difference between the source and target string and
+        /// returns the number of characters that must occur to get from
+        /// source to target.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static int MeasureDistance(string source, string target)
+        public int MeasureDistance(string source, string target)
         {
+            if (source == null) throw new ArgumentNullException("source");
+            if (target == null) throw new ArgumentNullException("target");
+
             var sl = source.Length;
             var tl = target.Length;
             var distance = new int[sl + 1, tl + 1];

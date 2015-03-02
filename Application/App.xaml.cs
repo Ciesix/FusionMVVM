@@ -18,10 +18,11 @@ namespace Application
             try
             {
                 var assembly = Assembly.GetEntryAssembly();
-                IWindowInitiator windowInitiator = new WindowInitiator();
+                IWindowInitiator initiator = new WindowInitiator();
+                IMetric metric = new Levenshtein();
 
                 // Add services to the Ioc container.
-                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(assembly, windowInitiator));
+                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(assembly, initiator, metric));
                 //Ioc.Current.RegisterAsSingleton<IEventAggregator>(new EventAggregator());
 
                 // Register windows in the WindowLocator service.

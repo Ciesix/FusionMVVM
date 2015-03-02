@@ -10,21 +10,27 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
     public class ConstructorTests
     {
         [Theory, CustomAutoData]
-        public void InitializedWithNullAssemblyThrowsException(IWindowInitiator windowInitiator)
+        public void InitializedWithNullAssemblyThrowsException(IWindowInitiator windowInitiator, IMetric metric)
         {
-            Assert.Throws<ArgumentNullException>(() => new WindowLocator(null, windowInitiator));
+            Assert.Throws<ArgumentNullException>(() => new WindowLocator(null, windowInitiator, metric));
         }
 
         [Theory, CustomAutoData]
-        public void InitializedWithNullWindowInitiatorThrowsException(Assembly assembly)
+        public void InitializedWithNullWindowInitiatorThrowsException(Assembly assembly, IMetric metric)
         {
-            Assert.Throws<ArgumentNullException>(() => new WindowLocator(assembly, null));
+            Assert.Throws<ArgumentNullException>(() => new WindowLocator(assembly, null, metric));
         }
 
         [Theory, CustomAutoData]
-        public void InitializedReturnsCorrectResult(Assembly assembly, IWindowInitiator windowInitiator)
+        public void InitializedWithNullMetricThrowsException(Assembly assembly, IMetric metric, IWindowInitiator windowInitiator)
         {
-            var sut = new WindowLocator(assembly, windowInitiator);
+            Assert.Throws<ArgumentNullException>(() => new WindowLocator(assembly, windowInitiator, null));
+        }
+
+        [Theory, CustomAutoData]
+        public void InitializedReturnsCorrectResult(Assembly assembly, IWindowInitiator windowInitiator, IMetric metric)
+        {
+            var sut = new WindowLocator(assembly, windowInitiator, metric);
             Assert.NotNull(sut);
         }
     }

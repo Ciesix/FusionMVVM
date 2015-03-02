@@ -17,19 +17,23 @@ namespace FusionMVVM.Service
 
         private readonly Assembly _assembly;
         private readonly IWindowInitiator _windowInitiator;
+        private readonly IMetric _metric;
 
         /// <summary>
         /// Initializes a new instance of the WindowLocator class.
         /// </summary>
         /// <param name="assembly"></param>
         /// <param name="windowInitiator"></param>
-        public WindowLocator(Assembly assembly, IWindowInitiator windowInitiator)
+        /// <param name="metric"></param>
+        public WindowLocator(Assembly assembly, IWindowInitiator windowInitiator, IMetric metric)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (windowInitiator == null) throw new ArgumentNullException("windowInitiator");
+            if (metric == null) throw new ArgumentNullException("metric");
 
             _assembly = assembly;
             _windowInitiator = windowInitiator;
+            _metric = metric;
         }
 
         /// <summary>
@@ -334,7 +338,7 @@ namespace FusionMVVM.Service
 
             foreach (var item in foundNamespaces)
             {
-                var distance = Levenshtein.MeasureDistance(item, target);
+                var distance = _metric.MeasureDistance(item, target);
                 if (distance < shortestDistance)
                 {
                     shortestDistance = distance;

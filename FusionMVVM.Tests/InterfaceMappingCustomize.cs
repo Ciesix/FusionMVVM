@@ -9,6 +9,7 @@ namespace FusionMVVM.Tests
         {
             fixture.Register<IWindowInitiator>(() => new WindowInitiator());
             fixture.Register<ITypeFilter>(() => new EndsWithTypeFilter(string.Empty));
+            fixture.Register<IMetric>(() => new Levenshtein());
         }
     }
 }
