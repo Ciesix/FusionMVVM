@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using FusionMVVM.Service;
 using FusionMVVM.Tests.Fakes;
 using Xunit;
@@ -16,11 +15,18 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
         }
 
         [Theory, CustomAutoData]
-        public void WindowHasCorrectDataContext(WindowLocator sut, FakeViewModel viewModel)
+        public void ViewModelTypeNotRegisteredReturnsNull(WindowLocator sut, FakeViewModel viewModel)
         {
-            sut.Register(viewModel.GetType(), typeof(Window));
             var actual = sut.CreateWindow(viewModel, null);
-            Assert.Same(viewModel, actual.DataContext);
+            Assert.Null(actual);
+        }
+
+        [Theory, CustomAutoData]
+        public void CreateWindowReturnsCorrectResult(WindowLocator sut, FakeViewModel viewModel)
+        {
+            sut.Register<FakeViewModel, FakeWindow>();
+            var actual = sut.CreateWindow(viewModel, null);
+            Assert.IsType<FakeWindow>(actual);
         }
     }
 }
