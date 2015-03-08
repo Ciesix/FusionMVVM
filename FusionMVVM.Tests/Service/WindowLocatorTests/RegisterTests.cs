@@ -1,5 +1,10 @@
-using System;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using FusionMVVM.Service;
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.Xunit;
 using Xunit;
 using Xunit.Extensions;
 
@@ -7,22 +12,46 @@ namespace FusionMVVM.Tests.Service.WindowLocatorTests
 {
     public class RegisterTests
     {
-        [Theory, CustomAutoData]
-        public void Register_WhenViewModelType_IsNull(WindowLocator sut)
+        [Fact]
+        public void NullViewModelTypeThrowException()
         {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<WindowLocator>();
+
+            // Verify outcome.
             Assert.Throws<ArgumentNullException>(() => sut.Register(null));
         }
 
-        [Theory, CustomAutoData]
-        public void RegisterManuel_WhenViewModelType_IsNull(WindowLocator sut, Type viewType)
+        [Theory, AutoData]
+        public void RegisterReturnsCorrectResult(Type viewModelType, Type viewType)
         {
-            Assert.Throws<ArgumentNullException>(() => sut.Register(null, viewType));
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<WindowLocator>();
+
+            // Exercise system.
+            sut.Register(viewModelType, viewType);
+            var actual = sut.RegisteredTypes.Where(pair => pair.Key == viewModelType);
+
+            // Verify outcome.
+            Assert.Equal(1, actual.Count());
         }
 
-        [Theory, CustomAutoData]
-        public void RegisterManuel_WhenModelType_IsNull(WindowLocator sut, Type viewModelType)
+        [Theory, AutoData]
+        public void RegisterSameViewModelTypeReturnsCorrectResult(Type viewModelType)
         {
-            Assert.Throws<ArgumentNullException>(() => sut.Register(viewModelType, null));
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<WindowLocator>();
+
+            // Exercise system.
+            sut.Register(viewModelType, typeof(UserControl));
+            sut.Register(viewModelType, typeof(Window));
+            var actual = sut.RegisteredTypes.FirstOrDefault(pair => pair.Key == viewModelType);
+
+            // Verify outcome.
+            Assert.Equal(typeof(Window), actual.Value);
         }
     }
 }

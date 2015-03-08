@@ -5,75 +5,33 @@ namespace FusionMVVM.Service
     public interface IWindowLocator
     {
         /// <summary>
-        /// Registers a window using the ViewModel type as it's source.
+        /// Registers a ViewModel and View with the same base name.
         /// </summary>
         /// <typeparam name="TViewModel"></typeparam>
         void Register<TViewModel>();
 
         /// <summary>
-        /// Registers a window using the ViewModel type as it's source.
-        /// </summary>
-        /// <param name="viewModelType"></param>
-        void Register(Type viewModelType);
-
-        /// <summary>
-        /// Registers the ViewModel and View types as a pair.
+        /// Registers a ViewModel and View as a pair.
         /// </summary>
         /// <typeparam name="TViewModel"></typeparam>
         /// <typeparam name="TView"></typeparam>
         void Register<TViewModel, TView>();
 
         /// <summary>
-        /// Registers the ViewModel and View types as a pair.
+        /// Registers a ViewModel and View as a pair. If a ViewType is not
+        /// specified, a View with the same base name will be registered to
+        /// the provided ViewModel.
         /// </summary>
         /// <param name="viewModelType"></param>
         /// <param name="viewType"></param>
-        void Register(Type viewModelType, Type viewType);
+        void Register(Type viewModelType, Type viewType = null);
 
-        /// <summary>
-        /// Registers all windows with a matching ViewModel name in the entry assembly.
-        /// </summary>
-        void RegisterAll();
+        void RegisterAll(bool includeReferencedAssemblies = false);
 
-        /// <summary>
-        /// Registers all windows with a matching ViewModel name in the entry assembly.
-        /// If includeReferencedAssemblies is true, all referenced assemblies are also searched.
-        /// </summary>
-        /// <param name="includeReferencedAssemblies"></param>
-        void RegisterAll(bool includeReferencedAssemblies);
+        void ShowWindow(ViewModelBase viewModel, ViewModelBase owner = null);
 
-        /// <summary>
-        /// Shows a window and sets the ViewModel as a DataContext.
-        /// </summary>
-        /// <param name="viewModel"></param>
-        void ShowWindow(ViewModelBase viewModel);
+        void ShowDialogWindow(ViewModelBase viewModel, ViewModelBase owner = null);
 
-        /// <summary>
-        /// Shows a window and sets the ViewModel as a DataContext.
-        /// Also set the owner of the window to the current ViewModels window.
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <param name="owner"></param>
-        void ShowWindow(ViewModelBase viewModel, ViewModelBase owner);
-
-        /// <summary>
-        /// Shows a window as a dialog and sets the ViewModel as a DataContext.
-        /// </summary>
-        /// <param name="viewModel"></param>
-        void ShowDialogWindow(ViewModelBase viewModel);
-
-        /// <summary>
-        /// Shows a window as a dialog and sets the ViewModel as a DataContext.
-        /// Also set the owner of the window to the current ViewModels window.
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <param name="owner"></param>
-        void ShowDialogWindow(ViewModelBase viewModel, ViewModelBase owner);
-
-        /// <summary>
-        /// Closes a window with the given ViewModel.
-        /// </summary>
-        /// <param name="viewModel"></param>
         void CloseWindow(ViewModelBase viewModel);
     }
 }
