@@ -49,13 +49,9 @@
     <Compile Include="Common\IMetric.cs" />
     <Compile Include="Common\ITypeFilter.cs" />
     <Compile Include="Common\IWindowInitiator.cs" />
-    <Compile Include="Common\WeakAction.cs" />
-    <Compile Include="Common\WeakActionGeneric.cs" />
     <Compile Include="Common\WindowInitiator.cs" />
     <Compile Include="ContainerBase.cs" />
     <Compile Include="ModelBase.cs" />
-    <Compile Include="Service\EventAggregator.cs" />
-    <Compile Include="Service\IEventAggregator.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Command\RelayCommandBase.cs" />

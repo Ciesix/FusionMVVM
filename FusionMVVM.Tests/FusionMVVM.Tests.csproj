@@ -78,7 +78,6 @@
     <Compile Include="InterfaceMappingCustomize.cs" />
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\EventAggregatorTests.cs" />
     <Compile Include="Service\WindowLocatorTests\ConstructorTests.cs" />
     <Compile Include="Service\WindowLocatorTests\ConvertNameToTypeTests.cs" />
     <Compile Include="Service\WindowLocatorTests\CreateWindowTests.cs" />
