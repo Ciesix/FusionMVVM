@@ -78,11 +78,15 @@
     <Compile Include="InterfaceMappingCustomize.cs" />
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\WindowLocatorTests\ConstructorTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\GetTypeFromAssemblyTests.cs" />
     <Compile Include="Service\WindowLocatorTests\RegisterTests.cs" />
     <Compile Include="TestData\FooView.xaml.cs">
       <DependentUpon>FooView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TestData\FooViewModel.cs" />
+    <Compile Include="TestData\TestAssembly.cs" />
+    <Compile Include="WindowLocatorCustomization.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FusionMVVM\FusionMVVM.csproj">

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using FusionMVVM.Common;
 
 namespace FusionMVVM.Service
 {
@@ -8,9 +12,22 @@ namespace FusionMVVM.Service
     {
         private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
 
+        private readonly IMetric _metric;
+
         public ReadOnlyDictionary<Type, Type> RegisteredTypes
         {
             get { return new ReadOnlyDictionary<Type, Type>(_registeredTypes); }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the WindowLocator class.
+        /// </summary>
+        /// <param name="metric"></param>
+        public WindowLocator(IMetric metric)
+        {
+            if (metric == null) throw new ArgumentNullException("metric");
+
+            _metric = metric;
         }
 
         /// <summary>
@@ -45,8 +62,12 @@ namespace FusionMVVM.Service
 
             if (viewType == null)
             {
+                var assembly = viewModelType.Assembly;
+                var viewName = Regex.Replace(viewModelType.Name, "Model", string.Empty, RegexOptions.IgnoreCase);
+                viewType = GetTypeFromAssembly(assembly, viewName);
             }
-            else
+
+            if (viewType != null)
             {
                 _registeredTypes.AddOrUpdate(viewModelType, k => viewType, (k, v) => viewType);
             }
@@ -70,6 +91,35 @@ namespace FusionMVVM.Service
         public void CloseWindow(ViewModelBase viewModel)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Tries to locate a type by name in the provided assembly.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public Type GetTypeFromAssembly(Assembly assembly, string typeName)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+            if (typeName == null) throw new ArgumentNullException("typeName");
+
+            var distinctTypes = assembly.GetTypes().Distinct();
+            var types = distinctTypes.Where(type => type.Name.Contains(typeName));
+            var shortestDistance = int.MaxValue;
+            Type bestMatchingType = null;
+
+            foreach (var type in types)
+            {
+                var distance = _metric.MeasureDistance(type.Name, typeName);
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    bestMatchingType = type;
+                }
+            }
+
+            return bestMatchingType;
         }
     }
 }
