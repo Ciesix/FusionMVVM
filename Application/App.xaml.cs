@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using Application.ViewModel;
 using FusionMVVM;
 using FusionMVVM.Common;
@@ -16,10 +17,11 @@ namespace Application
         {
             try
             {
+                var assembly = Assembly.GetEntryAssembly();
                 IMetric metric = new Levenshtein();
 
                 // Add services to the Ioc container.
-                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(metric));
+                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(assembly, metric));
 
                 // Register windows in the WindowLocator service.
                 var windowLocator = Ioc.Current.Resolve<IWindowLocator>();

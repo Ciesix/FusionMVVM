@@ -10,10 +10,14 @@ namespace FusionMVVM.Service
 {
     public class WindowLocator : IWindowLocator
     {
-        private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
-
+        private readonly Assembly _assembly;
         private readonly IMetric _metric;
 
+        private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
+
+        /// <summary>
+        /// Gets a read-only collection of registered types.
+        /// </summary>
         public ReadOnlyDictionary<Type, Type> RegisteredTypes
         {
             get { return new ReadOnlyDictionary<Type, Type>(_registeredTypes); }
@@ -22,11 +26,14 @@ namespace FusionMVVM.Service
         /// <summary>
         /// Initializes a new instance of the WindowLocator class.
         /// </summary>
+        /// <param name="assembly"></param>
         /// <param name="metric"></param>
-        public WindowLocator(IMetric metric)
+        public WindowLocator(Assembly assembly, IMetric metric)
         {
+            if (assembly == null) throw new ArgumentNullException("assembly");
             if (metric == null) throw new ArgumentNullException("metric");
 
+            _assembly = assembly;
             _metric = metric;
         }
 
@@ -63,7 +70,7 @@ namespace FusionMVVM.Service
             if (viewType == null)
             {
                 var assembly = viewModelType.Assembly;
-                var viewName = Regex.Replace(viewModelType.Name, "Model", string.Empty, RegexOptions.IgnoreCase);
+                var viewName = GetViewName(viewModelType.Name);
                 viewType = GetTypeFromAssembly(assembly, viewName);
             }
 
@@ -73,6 +80,12 @@ namespace FusionMVVM.Service
             }
         }
 
+        /// <summary>
+        /// Registers all ViewModels and Views with matching names as pairs, in
+        /// the provided assembly. If includeReferencedAssemblies is true, all
+        /// referenced assemblies are also searched.
+        /// </summary>
+        /// <param name="includeReferencedAssemblies"></param>
         public void RegisterAll(bool includeReferencedAssemblies = false)
         {
             throw new NotImplementedException();
@@ -120,6 +133,20 @@ namespace FusionMVVM.Service
             }
 
             return bestMatchingType;
+        }
+
+        /// <summary>
+        /// Removes 'Model' from the ViewModel name and returns the expected View name.
+        /// </summary>
+        /// <param name="viewModelName"></param>
+        /// <returns></returns>
+        public string GetViewName(string viewModelName)
+        {
+            if (viewModelName == null) throw new ArgumentNullException("viewModelName");
+
+            if (viewModelName == string.Empty) return string.Empty;
+
+            return Regex.Replace(viewModelName, "Model", string.Empty, RegexOptions.IgnoreCase);
         }
     }
 }

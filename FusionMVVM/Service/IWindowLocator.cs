@@ -26,6 +26,12 @@ namespace FusionMVVM.Service
         /// <param name="viewType"></param>
         void Register(Type viewModelType, Type viewType = null);
 
+        /// <summary>
+        /// Registers all ViewModels and Views with matching names as pairs, in
+        /// the provided assembly. If includeReferencedAssemblies is true, all
+        /// referenced assemblies are also searched.
+        /// </summary>
+        /// <param name="includeReferencedAssemblies"></param>
         void RegisterAll(bool includeReferencedAssemblies = false);
 
         void ShowWindow(ViewModelBase viewModel, ViewModelBase owner = null);
