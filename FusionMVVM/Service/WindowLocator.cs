@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
@@ -88,7 +89,16 @@ namespace FusionMVVM.Service
         /// <param name="includeReferencedAssemblies"></param>
         public void RegisterAll(bool includeReferencedAssemblies = false)
         {
-            throw new NotImplementedException();
+            var assemblies = AssemblyCluster(_assembly, includeReferencedAssemblies);
+
+            foreach (var assembly in assemblies)
+            {
+                // TODO: Filter method.
+                foreach (var viewModelType in assembly.GetTypes().Where(x => x.Name.EndsWith("ViewModel", StringComparison.OrdinalIgnoreCase)))
+                {
+                    Register(viewModelType);
+                }
+            }
         }
 
         public void ShowWindow(ViewModelBase viewModel, ViewModelBase owner = null)
@@ -147,6 +157,28 @@ namespace FusionMVVM.Service
             if (viewModelName == string.Empty) return string.Empty;
 
             return Regex.Replace(viewModelName, "Model", string.Empty, RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// Returns a read-only collection with the given assembly and referenced
+        /// assemblies if set to true.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="includeReferencedAssemblies"></param>
+        /// <returns></returns>
+        public IReadOnlyCollection<Assembly> AssemblyCluster(Assembly assembly, bool includeReferencedAssemblies = false)
+        {
+            if (assembly == null) throw new ArgumentNullException("assembly");
+
+            var assemblies = new List<Assembly> { assembly };
+
+            if (includeReferencedAssemblies)
+            {
+                var referencedAssemblies = assembly.GetReferencedAssemblies();
+                assemblies.AddRange(referencedAssemblies.Select(Assembly.Load));
+            }
+
+            return new ReadOnlyCollection<Assembly>(assemblies);
         }
     }
 }

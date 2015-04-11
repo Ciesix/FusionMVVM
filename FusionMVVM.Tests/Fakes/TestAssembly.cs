@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
+using Ploeh.AutoFixture;
 
 namespace FusionMVVM.Tests.Fakes
 {
@@ -18,6 +20,14 @@ namespace FusionMVVM.Tests.Fakes
         public override Type[] GetTypes()
         {
             return new[] { typeof(string), typeof(int), typeof(long), typeof(double) };
+        }
+
+        public override AssemblyName[] GetReferencedAssemblies()
+        {
+            var fixture = new Fixture();
+            var assemblyNames = fixture.CreateMany<Assembly>(4).Select(o => o.GetName()).ToArray();
+
+            return assemblyNames;
         }
     }
 }

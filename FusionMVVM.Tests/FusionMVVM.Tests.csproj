@@ -81,7 +81,7 @@
     <Compile Include="Service\WindowLocatorTests\ConstructorTests.cs" />
     <Compile Include="Service\WindowLocatorTests\GetTypeFromAssemblyTests.cs" />
     <Compile Include="Service\WindowLocatorTests\GetViewNameTests.cs" />
-    <Compile Include="Service\WindowLocatorTests\RegisterAllTests.cs" />
+    <Compile Include="Service\WindowLocatorTests\AssemblyClusterTests.cs" />
     <Compile Include="Service\WindowLocatorTests\RegisterTests.cs" />
     <Compile Include="TestData\FooView.xaml.cs">
       <DependentUpon>FooView.xaml</DependentUpon>
