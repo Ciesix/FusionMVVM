@@ -19,9 +19,10 @@ namespace Application
             {
                 var assembly = Assembly.GetEntryAssembly();
                 IMetric metric = new Levenshtein();
+                IFilter<Type> filter = new TypeEndsWithFilter();
 
                 // Add services to the Ioc container.
-                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(assembly, metric));
+                Ioc.Current.RegisterAsSingleton<IWindowLocator>(new WindowLocator(assembly, metric, filter));
 
                 // Register windows in the WindowLocator service.
                 var windowLocator = Ioc.Current.Resolve<IWindowLocator>();

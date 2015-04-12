@@ -13,6 +13,7 @@ namespace FusionMVVM.Service
     {
         private readonly Assembly _assembly;
         private readonly IMetric _metric;
+        private readonly IFilter<Type> _filter;
 
         private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
 
@@ -29,13 +30,16 @@ namespace FusionMVVM.Service
         /// </summary>
         /// <param name="assembly"></param>
         /// <param name="metric"></param>
-        public WindowLocator(Assembly assembly, IMetric metric)
+        /// <param name="filter"></param>
+        public WindowLocator(Assembly assembly, IMetric metric, IFilter<Type> filter)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (metric == null) throw new ArgumentNullException("metric");
+            if (filter == null) throw new ArgumentNullException("filter");
 
             _assembly = assembly;
             _metric = metric;
+            _filter = filter;
         }
 
         /// <summary>
@@ -93,8 +97,7 @@ namespace FusionMVVM.Service
 
             foreach (var assembly in assemblies)
             {
-                // TODO: Filter method.
-                foreach (var viewModelType in assembly.GetTypes().Where(x => x.Name.EndsWith("ViewModel", StringComparison.OrdinalIgnoreCase)))
+                foreach (var viewModelType in _filter.ApplyFilter("ViewModel", assembly.GetTypes(), StringComparison.OrdinalIgnoreCase))
                 {
                     Register(viewModelType);
                 }

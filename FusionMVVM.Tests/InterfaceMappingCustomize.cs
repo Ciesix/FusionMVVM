@@ -1,4 +1,5 @@
-﻿using FusionMVVM.Common;
+﻿using System;
+using FusionMVVM.Common;
 using Ploeh.AutoFixture;
 
 namespace FusionMVVM.Tests
@@ -8,7 +9,7 @@ namespace FusionMVVM.Tests
         public void Customize(IFixture fixture)
         {
             fixture.Register<IWindowInitiator>(() => new WindowInitiator());
-            fixture.Register<ITypeFilter>(() => new EndsWithTypeFilter(string.Empty));
+            fixture.Register<IFilter<Type>>(() => new TypeEndsWithFilter());
             fixture.Register<IMetric>(() => new Levenshtein());
         }
     }

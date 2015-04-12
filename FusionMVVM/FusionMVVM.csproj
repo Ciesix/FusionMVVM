@@ -45,9 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DependencyObjectExtensions.cs" />
-    <Compile Include="Common\EndsWithTypeFilter.cs" />
+    <Compile Include="Common\TypeEndsWithFilter.cs" />
     <Compile Include="Common\IMetric.cs" />
-    <Compile Include="Common\ITypeFilter.cs" />
+    <Compile Include="Common\IGenericFilter.cs" />
     <Compile Include="Common\IWindowInitiator.cs" />
     <Compile Include="Common\WindowInitiator.cs" />
     <Compile Include="ContainerBase.cs" />
