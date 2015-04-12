@@ -76,7 +76,6 @@
     <Compile Include="Fakes\FakeViewModel.cs" />
     <Compile Include="Fakes\FakeWindow.cs" />
     <Compile Include="Fakes\IFakeDatabaseService.cs" />
-    <Compile Include="Fakes\TestAssembly.cs" />
     <Compile Include="CustomInlineAutoDataAttribute.cs" />
     <Compile Include="InterfaceMappingCustomize.cs" />
     <Compile Include="IocTests.cs" />
