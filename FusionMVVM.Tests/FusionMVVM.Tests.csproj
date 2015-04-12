@@ -60,8 +60,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\AssemblyExtensionsTests\GetAssemblyClusterTests.cs" />
-    <Compile Include="Common\AssemblyExtensionsTests\GetTypeTests.cs" />
     <Compile Include="Common\LevenshteinTests\MeasureDistanceTests.cs" />
     <Compile Include="Common\TypeAndNameTests.cs" />
     <Compile Include="Common\TypeEndsWithFilterTests\ApplyFilterTests.cs" />
@@ -69,6 +67,8 @@
     <Compile Include="ContainerBaseTests.cs" />
     <Compile Include="CustomAutoDataAttribute.cs" />
     <Compile Include="DefaultIocTests.cs" />
+    <Compile Include="Extension\AssemblyExtensionsTests\GetAssemblyClusterTests.cs" />
+    <Compile Include="Extension\AssemblyExtensionsTests\GetTypeTests.cs" />
     <Compile Include="Fakes\FakeContainerBase.cs" />
     <Compile Include="Fakes\FakeCustomWindow.cs" />
     <Compile Include="Fakes\FakeDatabaseService.cs" />

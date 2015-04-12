@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Reflection;
-using FusionMVVM.Common;
+using FusionMVVM.Extension;
 using FusionMVVM.Tests.TestData;
 using Ploeh.AutoFixture;
 using Xunit;
 
-namespace FusionMVVM.Tests.Common.AssemblyExtensionsTests
+namespace FusionMVVM.Tests.Extension.AssemblyExtensionsTests
 {
     public class GetAssemblyClusterTests
     {

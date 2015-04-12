@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using FusionMVVM.Common;
 
-namespace FusionMVVM.Common
+namespace FusionMVVM.Extension
 {
     public static class AssemblyExtensions
     {

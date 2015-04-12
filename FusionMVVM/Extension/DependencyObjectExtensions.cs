@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace FusionMVVM.Common
+namespace FusionMVVM.Extension
 {
     public static class DependencyObjectExtensions
     {

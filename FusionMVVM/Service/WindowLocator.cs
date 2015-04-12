@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using FusionMVVM.Common;
+using FusionMVVM.Extension;
 
 namespace FusionMVVM.Service
 {

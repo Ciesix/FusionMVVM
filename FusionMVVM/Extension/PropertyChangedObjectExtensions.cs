@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FusionMVVM.Common;
 
-namespace FusionMVVM.Common
+namespace FusionMVVM.Extension
 {
     public static class PropertyChangedObjectExtensions
     {
