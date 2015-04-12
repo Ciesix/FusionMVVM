@@ -63,6 +63,7 @@
     <Compile Include="Common\LevenshteinTests\MeasureDistanceTests.cs" />
     <Compile Include="Common\TypeAndNameTests.cs" />
     <Compile Include="Common\TypeEndsWithFilterTests\ApplyFilterTests.cs" />
+    <Compile Include="Common\ViewModelToViewTests\RemoveTests.cs" />
     <Compile Include="Common\WindowInitiatorTests\InitializeTests.cs" />
     <Compile Include="ContainerBaseTests.cs" />
     <Compile Include="CustomAutoDataAttribute.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="IocTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\WindowLocatorTests\ConstructorTests.cs" />
-    <Compile Include="Service\WindowLocatorTests\GetViewNameTests.cs" />
     <Compile Include="Service\WindowLocatorTests\RegisterTests.cs" />
     <Compile Include="TestData\FooView.xaml.cs">
       <DependentUpon>FooView.xaml</DependentUpon>

@@ -44,10 +44,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IStringRemove.cs" />
     <Compile Include="Common\TypeEndsWithFilter.cs" />
     <Compile Include="Common\IMetric.cs" />
     <Compile Include="Common\IGenericFilter.cs" />
     <Compile Include="Common\IWindowInitiator.cs" />
+    <Compile Include="Common\ViewModelToView.cs" />
     <Compile Include="Common\WindowInitiator.cs" />
     <Compile Include="ContainerBase.cs" />
     <Compile Include="Extension\AssemblyExtensions.cs" />

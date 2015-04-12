@@ -10,6 +10,7 @@ namespace FusionMVVM.Tests
         {
             fixture.Register<IMetric>(() => new Levenshtein());
             fixture.Register<IFilter<Type>>(() => new TypeEndsWithFilter());
+            fixture.Register<IStringRemove>(() => new ViewModelToView());
         }
     }
 }

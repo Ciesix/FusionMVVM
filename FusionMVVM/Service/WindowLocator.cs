@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using FusionMVVM.Common;
 using FusionMVVM.Extension;
 
@@ -13,6 +12,7 @@ namespace FusionMVVM.Service
         private readonly Assembly _assembly;
         private readonly IMetric _metric;
         private readonly IFilter<Type> _filter;
+        private readonly IStringRemove _stringRemove;
 
         private readonly ConcurrentDictionary<Type, Type> _registeredTypes = new ConcurrentDictionary<Type, Type>();
 
@@ -30,15 +30,18 @@ namespace FusionMVVM.Service
         /// <param name="assembly"></param>
         /// <param name="metric"></param>
         /// <param name="filter"></param>
-        public WindowLocator(Assembly assembly, IMetric metric, IFilter<Type> filter)
+        /// <param name="stringRemove"></param>
+        public WindowLocator(Assembly assembly, IMetric metric, IFilter<Type> filter, IStringRemove stringRemove)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
             if (metric == null) throw new ArgumentNullException("metric");
             if (filter == null) throw new ArgumentNullException("filter");
+            if (stringRemove == null) throw new ArgumentNullException("stringRemove");
 
             _assembly = assembly;
             _metric = metric;
             _filter = filter;
+            _stringRemove = stringRemove;
         }
 
         /// <summary>
@@ -74,7 +77,7 @@ namespace FusionMVVM.Service
             if (viewType == null)
             {
                 var assembly = viewModelType.Assembly;
-                var viewName = GetViewName(viewModelType.Name);
+                var viewName = _stringRemove.Remove(viewModelType.Name, true);
                 viewType = assembly.GetType(_metric, viewName);
             }
 
@@ -116,20 +119,6 @@ namespace FusionMVVM.Service
         public void CloseWindow(ViewModelBase viewModel)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Removes 'Model' from the ViewModel name and returns the expected View name.
-        /// </summary>
-        /// <param name="viewModelName"></param>
-        /// <returns></returns>
-        public string GetViewName(string viewModelName)
-        {
-            if (viewModelName == null) throw new ArgumentNullException("viewModelName");
-
-            if (viewModelName == string.Empty) return string.Empty;
-
-            return Regex.Replace(viewModelName, "Model", string.Empty, RegexOptions.IgnoreCase);
         }
     }
 }
