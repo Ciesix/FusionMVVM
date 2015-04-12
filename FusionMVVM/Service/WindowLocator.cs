@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using FusionMVVM.Common;
@@ -93,7 +91,7 @@ namespace FusionMVVM.Service
         /// <param name="includeReferencedAssemblies"></param>
         public void RegisterAll(bool includeReferencedAssemblies = false)
         {
-            var assemblies = AssemblyCluster(_assembly, includeReferencedAssemblies);
+            var assemblies = _assembly.GetAssemblyCluster(includeReferencedAssemblies);
 
             foreach (var assembly in assemblies)
             {
@@ -131,28 +129,6 @@ namespace FusionMVVM.Service
             if (viewModelName == string.Empty) return string.Empty;
 
             return Regex.Replace(viewModelName, "Model", string.Empty, RegexOptions.IgnoreCase);
-        }
-
-        /// <summary>
-        /// Returns a read-only collection with the given assembly and referenced
-        /// assemblies if set to true.
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="includeReferencedAssemblies"></param>
-        /// <returns></returns>
-        public IReadOnlyCollection<Assembly> AssemblyCluster(Assembly assembly, bool includeReferencedAssemblies = false)
-        {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-
-            var assemblies = new List<Assembly> { assembly };
-
-            if (includeReferencedAssemblies)
-            {
-                var referencedAssemblies = assembly.GetReferencedAssemblies();
-                assemblies.AddRange(referencedAssemblies.Select(Assembly.Load));
-            }
-
-            return new ReadOnlyCollection<Assembly>(assemblies);
         }
     }
 }

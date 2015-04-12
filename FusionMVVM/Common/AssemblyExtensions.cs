@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
@@ -34,6 +36,25 @@ namespace FusionMVVM.Common
             }
 
             return bestMatchingType;
+        }
+
+        /// <summary>
+        /// Returns a cluster consists of a set of connected assemblies.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="includeReferencedAssemblies"></param>
+        /// <returns></returns>
+        public static IReadOnlyCollection<Assembly> GetAssemblyCluster(this Assembly assembly, bool includeReferencedAssemblies = false)
+        {
+            var assemblies = new List<Assembly> { assembly };
+
+            if (includeReferencedAssemblies)
+            {
+                var referencedAssemblies = assembly.GetReferencedAssemblies();
+                assemblies.AddRange(referencedAssemblies.Select(Assembly.Load));
+            }
+
+            return new ReadOnlyCollection<Assembly>(assemblies);
         }
     }
 }
