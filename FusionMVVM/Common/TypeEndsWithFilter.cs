@@ -16,8 +16,11 @@ namespace FusionMVVM.Common
         /// <returns></returns>
         public IEnumerable<Type> ApplyFilter(string text, IEnumerable<Type> enumerable, StringComparison comparison = StringComparison.Ordinal)
         {
+            if (text == null) throw new ArgumentNullException("text");
+            if (enumerable == null) throw new ArgumentNullException("enumerable");
+
             var filtered = from type in enumerable
-                           where type.FullName != null && (type.IsClass && type.FullName.EndsWith(text, comparison))
+                           where type.IsClass && type.FullName.EndsWith(text, comparison)
                            select type;
 
             return filtered;
