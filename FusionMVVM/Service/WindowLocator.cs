@@ -76,7 +76,7 @@ namespace FusionMVVM.Service
             {
                 var assembly = viewModelType.Assembly;
                 var viewName = GetViewName(viewModelType.Name);
-                viewType = GetTypeFromAssembly(assembly, viewName);
+                viewType = assembly.GetType(_metric, viewName);
             }
 
             if (viewType != null)
@@ -117,35 +117,6 @@ namespace FusionMVVM.Service
         public void CloseWindow(ViewModelBase viewModel)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Tries to locate a type by name in the provided assembly.
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <param name="typeName"></param>
-        /// <returns></returns>
-        public Type GetTypeFromAssembly(Assembly assembly, string typeName)
-        {
-            if (assembly == null) throw new ArgumentNullException("assembly");
-            if (typeName == null) throw new ArgumentNullException("typeName");
-
-            var distinctTypes = assembly.GetTypes().Distinct();
-            var types = distinctTypes.Where(type => type.Name.Contains(typeName));
-            var shortestDistance = int.MaxValue;
-            Type bestMatchingType = null;
-
-            foreach (var type in types)
-            {
-                var distance = _metric.MeasureDistance(type.Name, typeName);
-                if (distance < shortestDistance)
-                {
-                    shortestDistance = distance;
-                    bestMatchingType = type;
-                }
-            }
-
-            return bestMatchingType;
         }
 
         /// <summary>
