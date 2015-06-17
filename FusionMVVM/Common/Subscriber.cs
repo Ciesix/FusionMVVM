@@ -7,5 +7,9 @@ namespace FusionMVVM.Common
         public Subscriber(Delegate action)
         {
         }
+
+        public void Invoke<TEvent>(TEvent message)
+        {
+        }
     }
 }

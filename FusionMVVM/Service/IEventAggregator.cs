@@ -15,5 +15,14 @@ namespace FusionMVVM.Service
         /// <param name="action"></param>
         /// <param name="token"></param>
         void Subscribe<TEvent>(Action<TEvent> action, object token = null);
+
+        /// <summary>
+        /// Publishes the message to subscribers. The message will reach all
+        /// subscribers that registered for this message type and token.
+        /// </summary>
+        /// <typeparam name="TEvent"></typeparam>
+        /// <param name="message"></param>
+        /// <param name="token"></param>
+        void Publish<TEvent>(TEvent message, object token = null);
     }
 }

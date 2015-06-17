@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using FusionMVVM.Common;
 
 namespace FusionMVVM.Service
@@ -43,8 +44,35 @@ namespace FusionMVVM.Service
         {
         }
 
+        /// <summary>
+        /// Publishes the message to subscribers. The message will reach all
+        /// subscribers that registered for this message type and token.
+        /// </summary>
+        /// <typeparam name="TEvent"></typeparam>
+        /// <param name="message"></param>
+        /// <param name="token"></param>
         public void Publish<TEvent>(TEvent message, object token = null)
         {
+            if (message == null) throw new ArgumentNullException("message");
+
+            var eventType = typeof(TEvent);
+
+            List<SubscriberAndToken> list;
+            if (_subscribers.TryGetValue(eventType, out list))
+            {
+                SubscriberAndToken[] handlers;
+                lock (list)
+                {
+                    // Gets all subscribers.
+                    handlers = list.Where(item => item.Token == null).ToArray();
+                }
+
+                foreach (var handler in handlers)
+                {
+                    // Invoke the subscriber with the message.
+                    handler.Subscriber.Invoke(message);
+                }
+            }
         }
 
         public void RequestCleanup()

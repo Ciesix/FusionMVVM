@@ -49,5 +49,33 @@ namespace FusionMVVM.Tests.Service
             // Verify outcome.
             Assert.Equal(token, actual.Token);
         }
+
+        [Fact]
+        public void PublishShouldThrowExceptionWhenMessageNull()
+        {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<EventAggregator>();
+
+            // Verify outcome.
+            Assert.Throws<ArgumentNullException>(() => sut.Publish<object>(null));
+        }
+
+        [Fact(Skip = "Write tests for the Subscriber class first.")]
+        public void PublishWithoutTokenShouldReturnCorrect()
+        {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<EventAggregator>();
+            var message = fixture.Create<object>();
+            var isInvoked = false;
+
+            // Exercise system.
+            sut.Subscribe<object>(o => { isInvoked = true; });
+            sut.Publish(message);
+
+            // Verify outcome.
+            Assert.True(isInvoked);
+        }
     }
 }
