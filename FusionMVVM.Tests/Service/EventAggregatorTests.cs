@@ -1,61 +1,53 @@
-﻿//using System;
-//using FusionMVVM.Service;
-//using Xunit;
+﻿using System;
+using System.Linq;
+using FusionMVVM.Service;
+using Ploeh.AutoFixture;
+using Xunit;
 
-//namespace FusionMVVM.Tests.Service
-//{
-//    public class EventAggregatorTests
-//    {
-//        [Fact]
-//        public void SubscribeWithoutTarget_ThrowsException()
-//        {
-//            var sut = new EventAggregator();
-//            Assert.Throws<ArgumentNullException>(() => sut.Subscribe<string>(null, s => { }));
-//        }
+namespace FusionMVVM.Tests.Service
+{
+    public class EventAggregatorTests
+    {
+        [Fact]
+        public void SubscribeShouldThrowExceptionWhenActionNull()
+        {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<EventAggregator>();
 
-//        [Fact]
-//        public void SubscribeWithoutAction_ThrowsException()
-//        {
-//            var sut = new EventAggregator();
-//            Assert.Throws<ArgumentNullException>(() => sut.Subscribe<string>(this, null));
-//        }
+            // Verify outcome.
+            Assert.Throws<ArgumentNullException>(() => sut.Subscribe<object>(null));
+        }
 
-//        [Fact]
-//        public void SubscribeMessageTypeNotFound()
-//        {
-//            var sut = new EventAggregator();
-//            var actual = sut.GetSubscribers<string>().Count;
-//            Assert.Equal(0, actual);
-//        }
+        [Fact]
+        public void SubscribeWithoutTokenShouldReturnCorrect()
+        {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<EventAggregator>();
 
-//        [Fact]
-//        public void SubscribeReturnsCorrectResult()
-//        {
-//            var sut = new EventAggregator();
-//            sut.Subscribe<string>(this, s => { });
+            // Exercise system.
+            sut.Subscribe<object>(o => { });
+            var actual = sut.Subscribers.First().Value.Single();
 
-//            var actual = sut.GetSubscribers<string>().Count;
+            // Verify outcome.
+            Assert.NotNull(actual.Subscriber);
+        }
 
-//            Assert.Equal(1, actual);
-//        }
+        [Fact]
+        public void SubscribeWithTokenShouldReturnCorrect()
+        {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<EventAggregator>();
+            var token = fixture.Create<string>();
 
-//        [Fact]
-//        public void UnsubscribeWithoutTarget_ThrowsException()
-//        {
-//            var sut = new EventAggregator();
-//            Assert.Throws<ArgumentNullException>(() => sut.Unsubscribe<string>(null));
-//        }
+            // Exercise system.
+            sut.Subscribe<object>(o => { }, token);
+            var actual = sut.Subscribers.First().Value.Single();
 
-//        [Fact]
-//        public void UnsubscribeReturnsCorrectResult()
-//        {
-//            var sut = new EventAggregator();
-//            sut.Subscribe<string>(this, s => { });
-//            sut.Unsubscribe<string>(this);
-
-//            var actual = sut.GetSubscribers<string>().Count;
-
-//            Assert.Equal(0, actual);
-//        }
-//    }
-//}
+            // Verify outcome.
+            Assert.Equal(token, actual.Token);
+        }
+    }
+}

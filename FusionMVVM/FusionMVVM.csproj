@@ -49,6 +49,8 @@
     <Compile Include="Common\IMetric.cs" />
     <Compile Include="Common\ITypeFilter.cs" />
     <Compile Include="Common\IWindowInitiator.cs" />
+    <Compile Include="Common\Subscriber.cs" />
+    <Compile Include="Common\SubscriberAndToken.cs" />
     <Compile Include="Common\WindowInitiator.cs" />
     <Compile Include="ContainerBase.cs" />
     <Compile Include="ModelBase.cs" />

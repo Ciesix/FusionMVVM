@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\LevenshteinTests\MeasureDistanceTests.cs" />
+    <Compile Include="Common\SubscriberAndTokenTests.cs" />
     <Compile Include="Common\TypeAndNameTests.cs" />
     <Compile Include="Common\WindowInitiatorTests\InitializeTests.cs" />
     <Compile Include="ContainerBaseTests.cs" />
