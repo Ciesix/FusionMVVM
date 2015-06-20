@@ -28,6 +28,23 @@ namespace FusionMVVM.Service
         /// <param name="token"></param>
         public void Subscribe<TEvent>(Action<TEvent> action, object token = null)
         {
+            var target = action == null ? null : action.Target;
+            Subscribe(target, action, token);
+        }
+
+        /// <summary>
+        /// Subscribes a recipient for a type of event TEvent.
+        /// The action parameter will be executed when a corresponding message
+        /// is sent, with a matching token.
+        /// Registering a recipient does not create a hard reference to it,
+        /// so if this recipient is deleted, no memory leak is caused.
+        /// </summary>
+        /// <typeparam name="TEvent"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="action"></param>
+        /// <param name="token"></param>
+        public void Subscribe<TEvent>(object target, Action<TEvent> action, object token = null)
+        {
             if (action == null) throw new ArgumentNullException("action");
 
             var eventType = typeof(TEvent);
@@ -35,7 +52,7 @@ namespace FusionMVVM.Service
 
             lock (list)
             {
-                var subscriber = new Subscriber(action);
+                var subscriber = new Subscriber(target, action);
                 list.Add(new SubscriberAndToken(subscriber, token));
             }
         }
@@ -64,13 +81,13 @@ namespace FusionMVVM.Service
                 lock (list)
                 {
                     // Gets all subscribers.
-                    handlers = list.Where(item => item.Token == null).ToArray();
+                    handlers = list.Where(item => Equals(item.Token, token)).ToArray();
                 }
 
                 foreach (var handler in handlers)
                 {
                     // Invoke the subscriber with the message.
-                    handler.Subscriber.Invoke(message);
+                    handler.Subscriber.InvokeOnMain(message);
                 }
             }
         }

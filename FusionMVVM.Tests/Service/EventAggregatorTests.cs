@@ -3,6 +3,7 @@ using System.Linq;
 using FusionMVVM.Service;
 using Ploeh.AutoFixture;
 using Xunit;
+using Xunit.Extensions;
 
 namespace FusionMVVM.Tests.Service
 {
@@ -61,7 +62,7 @@ namespace FusionMVVM.Tests.Service
             Assert.Throws<ArgumentNullException>(() => sut.Publish<object>(null));
         }
 
-        [Fact(Skip = "Write tests for the Subscriber class first.")]
+        [Fact]
         public void PublishWithoutTokenShouldReturnCorrect()
         {
             // Fixture setup.
@@ -76,6 +77,52 @@ namespace FusionMVVM.Tests.Service
 
             // Verify outcome.
             Assert.True(isInvoked);
+        }
+
+        [Theory]
+        [InlineData("token", "token")]
+        [InlineData(Token.Test, Token.Test)]
+        public void PublishWithTokenShouldReturnCorrect(object tokenOne, object tokenTwo)
+        {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<EventAggregator>();
+            var message = fixture.Create<object>();
+            var isInvoked = false;
+
+            // Exercise system.
+            sut.Subscribe<object>(o => { isInvoked = true; }, tokenOne);
+            sut.Publish(message, tokenTwo);
+
+            // Verify outcome.
+            Assert.True(isInvoked);
+        }
+
+        [Fact]
+        public void PublishToSubscriberWithStaticMethod()
+        {
+            // Fixture setup.
+            var fixture = new Fixture();
+            var sut = fixture.Create<EventAggregator>();
+            var message = fixture.Create<object>();
+            var isInvoked = false;
+
+            // Exercise system.
+            sut.Subscribe<object>(null, o => isInvoked = StaticMethod());
+            sut.Publish(message);
+
+            // Verify outcome.
+            Assert.True(isInvoked);
+        }
+
+        private static bool StaticMethod()
+        {
+            return true;
+        }
+
+        private enum Token
+        {
+            Test
         }
     }
 }

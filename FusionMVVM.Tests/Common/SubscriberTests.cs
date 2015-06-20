@@ -1,6 +1,5 @@
 ﻿using System;
 using FusionMVVM.Common;
-using Ploeh.AutoFixture;
 using Xunit;
 
 namespace FusionMVVM.Tests.Common
@@ -18,8 +17,9 @@ namespace FusionMVVM.Tests.Common
         public void InvokeShouldThrowExceptionWhenMessageNull()
         {
             // Fixture setup.
-            var fixture = new Fixture();
-            var action = fixture.Create<Action>();
+            var action = new Action<object>(o => { });
+
+            // Exercise system.
             var sut = new Subscriber(action);
 
             // Verify outcome.
